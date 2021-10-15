@@ -68,6 +68,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Die();
         }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            items[itemIndex].GetComponent<Gun>().Shoot();
+        }
+
         Look();
         Move();
         Jump();
