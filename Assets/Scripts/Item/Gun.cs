@@ -8,6 +8,8 @@ public class Gun : MonoBehaviour
     [SerializeField] private float fireRate = 0.1f; // 1f = 1second
     [SerializeField] private float amountOfAmmo = 5f;
     [SerializeField] private Text textOfAmountOfAmmo;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioSource audioSource;
 
     private float _nextTimeToFire = 0f;
     private float _amountOfAmmoSave;
@@ -30,6 +32,7 @@ public class Gun : MonoBehaviour
         if(Time.time >= _nextTimeToFire && amountOfAmmo != 0)
         {
             _nextTimeToFire = Time.time + fireRate;
+            audioSource.PlayOneShot(shootSound);
             Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
             ray.origin = cam.transform.position;
             if (Physics.Raycast(ray, out RaycastHit hit))
