@@ -80,9 +80,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (Input.GetMouseButton(0))
         {
             items[itemIndex].GetComponent<Gun>().Shoot();
-        }
+        }            
 
-        if (itemIndex == 2)
+                if (itemIndex == 2)
         {
             crosshair.gameObject.SetActive(false);
         }
@@ -244,6 +244,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             isScopeOn = true;
         }
         else if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == true)
+        {
+            scope.gameObject.SetActive(false);
+            isScopeOn = false;
+        }
+        else if (itemIndex != 2)
         {
             scope.gameObject.SetActive(false);
             isScopeOn = false;
