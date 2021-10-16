@@ -11,7 +11,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] GameObject cameraHolder;
     [SerializeField] GameObject UI;
     
-    [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
+    [SerializeField] float mouseSensitivity;
+    [SerializeField] float sprintSpeed;
+    [SerializeField] float walkSpeed;
+    [SerializeField] float jumpForce;
+    [SerializeField] float smoothTime;
 
     [SerializeField] GameObject[] items;
 
@@ -68,7 +72,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Die();
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             items[itemIndex].GetComponent<Gun>().Shoot();
         }
