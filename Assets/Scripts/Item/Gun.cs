@@ -8,7 +8,10 @@ public class Gun : MonoBehaviour
     [SerializeField] private float fireRate = 0.1f; // 1f = 1second
     [SerializeField] private float amountOfAmmo = 5f;
     [SerializeField] private Text textOfAmountOfAmmo;
+
     [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip reloadSound;
+    [SerializeField] private AudioClip noAmmoSound;
     [SerializeField] private AudioSource audioSource;
 
     private float _nextTimeToFire = 0f;
@@ -29,10 +32,10 @@ public class Gun : MonoBehaviour
     }
     public void Shoot()
     {
-        if(Time.time >= _nextTimeToFire && amountOfAmmo != 0)
+        if (Time.time >= _nextTimeToFire && amountOfAmmo != 0)
         {
-            _nextTimeToFire = Time.time + fireRate;
             audioSource.PlayOneShot(shootSound);
+            _nextTimeToFire = Time.time + fireRate;           
             Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
             ray.origin = cam.transform.position;
             if (Physics.Raycast(ray, out RaycastHit hit))
@@ -42,11 +45,17 @@ public class Gun : MonoBehaviour
                     .TakeDamage(damage);
             }
             amountOfAmmo -= 1;
-        }     
+        }
+        else if (amountOfAmmo == 0 && audioSource != null)
+        {
+            audioSource.PlayOneShot(noAmmoSound);
+        }
     }
 
     private void Reload()
     {
         amountOfAmmo = _amountOfAmmoSave;
+        audioSource.PlayOneShot(reloadSound);
+
     }
 }
