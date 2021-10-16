@@ -56,6 +56,5 @@ public class Gun : MonoBehaviour
     {
         amountOfAmmo = _amountOfAmmoSave;
         audioSource.PlayOneShot(reloadSound);
-
     }
 }

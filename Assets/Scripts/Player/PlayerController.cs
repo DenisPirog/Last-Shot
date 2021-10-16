@@ -19,7 +19,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     [SerializeField] GameObject[] items;
 
+    [SerializeField] private Image scope;
+
     [SerializeField] Image healthBarImage;
+    [SerializeField] Image crosshair;
 
     int itemIndex;
     int previousItemIndex = -1;
@@ -37,6 +40,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     float currentHealth = maxHealth;
 
     PlayerManager playerManager;
+
+    private bool isScopeOn;
 
     private void Awake()
     {
@@ -77,10 +82,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             items[itemIndex].GetComponent<Gun>().Shoot();
         }
 
+        if (itemIndex == 2)
+        {
+            crosshair.gameObject.SetActive(false);
+        }
+        else
+        {
+            crosshair.gameObject.SetActive(true);
+        }
+
         Look();
         Move();
         Jump();
-        SwitchItem();    
+        SwitchItem();
+        Scope();
     }
 
     void Move()
@@ -136,6 +151,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void SwitchItem()
     {
+
         for (int i = 0; i < items.Length; i++)
         {
             if (Input.GetKeyDown((i + 1).ToString()))
@@ -218,5 +234,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     void Die()
     {
         playerManager.Die();
+    }
+
+    private void Scope()
+    {
+        if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == false)
+        {
+            scope.gameObject.SetActive(true);
+            isScopeOn = true;
+        }
+        else if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == true)
+        {
+            scope.gameObject.SetActive(false);
+            isScopeOn = false;
+        }
     }
 }
