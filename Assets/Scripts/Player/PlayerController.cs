@@ -79,16 +79,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         if (Input.GetMouseButton(0))
         {
-            items[itemIndex].GetComponent<Gun>().Shoot();
+            items[itemIndex].GetComponent<Gun>().RPC_Shoot();
         }            
 
-                if (itemIndex == 2)
+        if (itemIndex == 2)
         {
             crosshair.gameObject.SetActive(false);
         }
         else
         {
             crosshair.gameObject.SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R) && items[itemIndex].GetComponent<Gun>().amountOfAmmo != items[itemIndex].GetComponent<Gun>().amountOfAmmoSave)
+        {
+            items[itemIndex].GetComponent<Gun>().Reload();
         }
 
         Look();

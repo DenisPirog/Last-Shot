@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class Gun : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     [SerializeField] private float damage;
     [SerializeField] private float fireRate = 0.1f; // 1f = 1second
-    [SerializeField] private float amountOfAmmo = 5f;
     [SerializeField] private Text textOfAmountOfAmmo;
 
     [SerializeField] private AudioClip shootSound;
@@ -15,22 +15,20 @@ public class Gun : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
     private float _nextTimeToFire = 0f;
-    private float _amountOfAmmoSave;
+    public float amountOfAmmoSave;
+    public float amountOfAmmo = 5f;
 
     private void Awake()
     {
-        _amountOfAmmoSave = amountOfAmmo;
+        amountOfAmmoSave = amountOfAmmo;
     }
     private void Update()
     {
-        textOfAmountOfAmmo.text = $"{amountOfAmmo} / {_amountOfAmmoSave}";
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Reload();
-        }
+        textOfAmountOfAmmo.text = $"{amountOfAmmo} / {amountOfAmmoSave}";
     }
-    public void Shoot()
+
+    [PunRPC]
+    public void RPC_Shoot()
     {
         if (Time.time >= _nextTimeToFire && amountOfAmmo != 0)
         {
@@ -45,6 +43,11 @@ public class Gun : MonoBehaviour
                     .TakeDamage(damage);
             }
             amountOfAmmo -= 1;
+
+            audioSource.Stop();
+            audioSource.clip = shootSound;
+            audioSource.Play();
+
         }
         else if (amountOfAmmo == 0 && audioSource != null)
         {
@@ -52,9 +55,9 @@ public class Gun : MonoBehaviour
         }
     }
 
-    private void Reload()
+    public void Reload()
     {
-        amountOfAmmo = _amountOfAmmoSave;
+        amountOfAmmo = amountOfAmmoSave;
         audioSource.PlayOneShot(reloadSound);
     }
 }
