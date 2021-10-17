@@ -55,7 +55,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (PV.IsMine)
         {
-            EquipItem(0);
         }
         else
         {
@@ -77,30 +76,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Die();
         }
 
-        if (Input.GetMouseButton(0))
-        {
-            items[itemIndex].GetComponent<Gun>().RPC_Shoot();
-        }            
-
-        if (itemIndex == 2)
-        {
-            crosshair.gameObject.SetActive(false);
-        }
-        else
-        {
-            crosshair.gameObject.SetActive(true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.R) && items[itemIndex].GetComponent<Gun>().amountOfAmmo != items[itemIndex].GetComponent<Gun>().amountOfAmmoSave)
-        {
-            items[itemIndex].GetComponent<Gun>().Reload();
-        }
-
         Look();
         Move();
         Jump();
-        SwitchItem();
-        Scope();
     }
 
     void Move()

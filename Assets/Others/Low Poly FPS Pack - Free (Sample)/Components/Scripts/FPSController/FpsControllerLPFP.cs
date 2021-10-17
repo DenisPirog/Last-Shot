@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+using UnityEngine.UI;
 
 namespace FPSControllerLPFP
 {
@@ -8,7 +12,7 @@ namespace FPSControllerLPFP
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(AudioSource))]
-    public class FpsControllerLPFP : MonoBehaviour
+    public class FpsControllerLPFP : MonoBehaviourPunCallbacks
     {
 #pragma warning disable 649
 		[Header("Arms")]
@@ -55,8 +59,8 @@ namespace FPSControllerLPFP
 
         [Tooltip("The names of the axes and buttons for Unity's Input Manager."), SerializeField]
         private FpsInput input;
-#pragma warning restore 649
 
+#pragma warning restore 649
         private Rigidbody _rigidbody;
         private CapsuleCollider _collider;
         private AudioSource _audioSource;
@@ -68,6 +72,25 @@ namespace FPSControllerLPFP
 
         private readonly RaycastHit[] _groundCastResults = new RaycastHit[8];
         private readonly RaycastHit[] _wallCastResults = new RaycastHit[8];
+
+        [Header("My")]
+        public PhotonView PV;
+        public PlayerManager playerManager;
+        int itemIndex;
+        int previousItemIndex = -1;
+        const float maxHealth = 100f;
+        float currentHealth = maxHealth;
+        public GameObject UI1;
+        public GameObject UI2;
+        [SerializeField] GameObject[] items;
+
+
+        private void Awake()
+        {
+            PV = GetComponent<PhotonView>();
+
+            playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+        }
 
         /// Initializes the FpsController on start.
         private void Start()
@@ -85,6 +108,18 @@ namespace FPSControllerLPFP
             _velocityZ = new SmoothVelocity();
             Cursor.lockState = CursorLockMode.Locked;
             ValidateRotationRestriction();
+
+            if (PV.IsMine)
+            {
+                EquipItem(0);
+            }
+            else
+            {
+                Destroy(GetComponentInChildren<Camera>().gameObject);
+                Destroy(_rigidbody);
+                Destroy(UI1);
+                Destroy(UI2);
+            }
         }
 			
         private Transform AssignCharactersCamera()
@@ -139,6 +174,11 @@ namespace FPSControllerLPFP
             RotateCameraAndCharacter();
             MoveCharacter();
             _isGrounded = false;
+
+            if (!PV.IsMine)
+            {
+                return;
+            }
         }
 			
         /// Moves the camera to the character, processes jumping and plays sounds every frame.
@@ -147,6 +187,93 @@ namespace FPSControllerLPFP
 			arms.position = transform.position + transform.TransformVector(armPosition);
             Jump();
             PlayFootstepSounds();
+
+            if (!PV.IsMine)
+            {
+                return;
+            }
+
+            if (transform.position.y < -10f)
+            {
+                Die();
+            }
+
+            SwitchItem();
+        }
+
+        void Die()
+        {
+            playerManager.Die();
+        }
+
+        void EquipItem(int _index)
+        {
+            if (_index == previousItemIndex)
+            {
+                return;
+            }
+
+            itemIndex = _index;
+
+            items[itemIndex].SetActive(true);
+
+            if (previousItemIndex != -1)
+            {
+                items[previousItemIndex].SetActive(false);
+            }
+
+            previousItemIndex = itemIndex;
+
+            if (PV.IsMine)
+            {
+                Hashtable hash = new Hashtable();
+                hash.Add("itemIndex", itemIndex);
+                PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            }
+        }
+
+        public void SwitchItem()
+        {
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (Input.GetKeyDown((i + 1).ToString()))
+                {
+                    EquipItem(i);
+                    break;
+                }
+            }
+        }
+
+        public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        {
+            if (!PV.IsMine && targetPlayer == PV.Owner)
+            {
+                EquipItem((int)changedProps["itemIndex"]);
+            }
+        }
+
+        public void TakeDamage(float damage)
+        {
+            PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        }
+
+        [PunRPC]
+        void RPC_TakeDamage(float damage)
+        {
+            if (!PV.IsMine)
+            {
+                return;
+            }
+
+            currentHealth -= damage;
+
+           // healthBarImage.fillAmount = currentHealth / maxHealth;
+
+            if (currentHealth <= 0f)
+            {
+                Die();
+            }
         }
 
         private void RotateCameraAndCharacter()
