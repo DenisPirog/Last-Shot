@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
@@ -10,7 +8,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
     [SerializeField] GameObject cameraHolder;
     [SerializeField] GameObject UI;
-    
+
     [SerializeField] float mouseSensitivity;
     [SerializeField] float sprintSpeed;
     [SerializeField] float walkSpeed;
@@ -24,7 +22,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] Image healthBarImage;
     [SerializeField] Image crosshair;
 
-    int itemIndex;
+    [HideInInspector] public int itemIndex;
     int previousItemIndex = -1;
 
     float verticalLookRotation;
