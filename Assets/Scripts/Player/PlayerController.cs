@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private Vector3 moveAmount;
 
     private Rigidbody rb;
+    private Gun gun;
 
     private PhotonView PV;
 
@@ -92,7 +93,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (Input.GetMouseButton(0))
         {
-            items[itemIndex].GetComponent<Gun>().RPC_Shoot();
+            gun.RPC_Shoot();
         }
     }
 
@@ -110,9 +111,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void Reload()
     {
-        if (Input.GetKeyDown(KeyCode.R) && items[itemIndex].GetComponent<Gun>().amountOfAmmo != items[itemIndex].GetComponent<Gun>().amountOfAmmoSave)
+        if (Input.GetKeyDown(KeyCode.R) )
         {
-            items[itemIndex].GetComponent<Gun>().Reload();
+            gun.TryReload();
         }
     }
 
@@ -147,8 +148,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             return;
         }
-
+        
         itemIndex = _index;
+        gun = items[itemIndex].GetComponent<Gun>();
 
         items[itemIndex].SetActive(true);
 

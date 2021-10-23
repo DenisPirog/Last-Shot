@@ -13,7 +13,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private Camera cam;
     [SerializeField] private float damage;
     [SerializeField] private float fireRate = 0.1f; // 1f = 1second
-    public float amountOfAmmo;
+    public int amountOfAmmo;
     [SerializeField] private Text textOfAmountOfAmmo;
 
     [Header("Sounds")]
@@ -44,7 +44,7 @@ public class Gun : MonoBehaviour
 
     private float _nextTimeToFire = 0f;
 
-    [HideInInspector] public float amountOfAmmoSave;
+    [HideInInspector] public int amountOfAmmoSave;
 
     private void Awake()
     {
@@ -87,7 +87,16 @@ public class Gun : MonoBehaviour
         }
     }
 
-    public void Reload()
+    public bool TryReload()
+    {
+        if (amountOfAmmo == amountOfAmmoSave)
+            return false;
+        
+        Reload();
+        return true;
+    }
+    
+    private void Reload()
     {
         amountOfAmmo = amountOfAmmoSave;
         audioSource.PlayOneShot(reloadSound);
