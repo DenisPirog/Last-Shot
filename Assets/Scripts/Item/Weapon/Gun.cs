@@ -53,6 +53,9 @@ public class Gun : MonoBehaviour
     private void Update()
     {
         textOfAmountOfAmmo.text = $"{amountOfAmmo} / {amountOfAmmoSave}";
+
+        _targetRotation = Vector3.Lerp(_targetRotation, Vector3.zero, _returnSpeed * Time.deltaTime);
+        _currentRotation = Vector3.Slerp(_currentRotation, _targetRotation, _snappiness * Time.deltaTime);
     }
 
     [PunRPC]
