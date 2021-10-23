@@ -8,13 +8,8 @@ public class Gun : MonoBehaviour
 
     [SerializeField] private Recoil _recoilScript;
 
-    [Header("Weapon Settings")]
-
-    [SerializeField] private Camera cam;
-    [SerializeField] private float damage;
-    [SerializeField] private float fireRate = 0.1f; // 1f = 1second
-    public int amountOfAmmo;
-    [SerializeField] private Text textOfAmountOfAmmo;
+    [Header("UI")]
+    public GameObject gunUI;
 
     [Header("Sounds")]
 
@@ -22,6 +17,14 @@ public class Gun : MonoBehaviour
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private AudioClip noAmmoSound;
     [SerializeField] private AudioSource audioSource;
+
+    [Header("Weapon Settings")]
+
+    [SerializeField] private Camera cam;
+    [SerializeField] private float damage;
+    [SerializeField] private float fireRate = 0.1f; // 1f = 1second
+    public int amountOfAmmo;
+    [SerializeField] private Text textOfAmountOfAmmo;
 
     //Rotations
     [HideInInspector] public Vector3 _currentRotation;
@@ -38,9 +41,6 @@ public class Gun : MonoBehaviour
 
     public float _snappiness;
     public float _returnSpeed;
-
-    [Header("UI")]
-    public GameObject gunUI;
 
     private float _nextTimeToFire = 0f;
 
