@@ -39,6 +39,9 @@ public class Gun : MonoBehaviour
     public float _snappiness;
     public float _returnSpeed;
 
+    [Header("UI")]
+    public GameObject gunUI;
+
     private float _nextTimeToFire = 0f;
 
     [HideInInspector] public float amountOfAmmoSave;

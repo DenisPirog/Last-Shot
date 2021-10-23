@@ -6,38 +6,40 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
+    [Header("UI")]
     [SerializeField] GameObject cameraHolder;
     [SerializeField] GameObject UI;
+    [SerializeField] private Image scope;
+    [SerializeField] private Image healthBarImage;
+    [SerializeField] private Image crosshair;
+    [SerializeField] private Text healthText;
 
+    [Header("Settings")]
     [SerializeField] float mouseSensitivity;
     [SerializeField] float sprintSpeed;
     [SerializeField] float walkSpeed;
     [SerializeField] float jumpForce;
     [SerializeField] float smoothTime;
 
-    [SerializeField] GameObject[] items;
-
-    [SerializeField] private Image scope;
-
-    [SerializeField] Image healthBarImage;
-    [SerializeField] Image crosshair;
+    [Header("Items")]
+    [SerializeField] private GameObject[] items;
 
     [HideInInspector] public int itemIndex;
-    int previousItemIndex = -1;
+    private int previousItemIndex = -1;
 
-    float verticalLookRotation;
-    bool grounded;
-    Vector3 smoothMoveVelocity;
-    Vector3 moveAmount;
+    private float verticalLookRotation;
+    private bool grounded;
+    private Vector3 smoothMoveVelocity;
+    private Vector3 moveAmount;
 
-    Rigidbody rb;
+    private Rigidbody rb;
 
-    PhotonView PV;
+    private PhotonView PV;
 
-    const float maxHealth = 100f;
-    float currentHealth = maxHealth;
+    private const float maxHealth = 100f;
+    private float currentHealth = maxHealth;
 
-    PlayerManager playerManager;
+    private PlayerManager playerManager;
 
     private bool isScopeOn;
 
@@ -75,11 +77,27 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Die();
         }
 
+        ItemImageSwicth();
+        Shoot();
+        HideCrosshair();
+        Reload();
+        Look();
+        Move();
+        Jump();
+        SwitchItem();
+        Scope();
+    }
+
+    void Shoot()
+    {
         if (Input.GetMouseButton(0))
         {
             items[itemIndex].GetComponent<Gun>().RPC_Shoot();
-        }            
+        }
+    }
 
+    void HideCrosshair()
+    {
         if (itemIndex == 2)
         {
             crosshair.gameObject.SetActive(false);
@@ -88,17 +106,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             crosshair.gameObject.SetActive(true);
         }
+    }
 
+    void Reload()
+    {
         if (Input.GetKeyDown(KeyCode.R) && items[itemIndex].GetComponent<Gun>().amountOfAmmo != items[itemIndex].GetComponent<Gun>().amountOfAmmoSave)
         {
             items[itemIndex].GetComponent<Gun>().Reload();
         }
-
-        Look();
-        Move();
-        Jump();
-        SwitchItem();
-        Scope();
     }
 
     void Move()
@@ -154,36 +169,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     void SwitchItem()
     {
-
         for (int i = 0; i < items.Length; i++)
         {
             if (Input.GetKeyDown((i + 1).ToString()))
             {
-                EquipItem(i);
+                EquipItem(i);               
                 break;
-            }
-        }
-
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
-        {
-            if (itemIndex >= items.Length - 1)
-            {
-                EquipItem(0);
-            }
-            else
-            {
-                EquipItem(itemIndex + 1);
-            }
-        }
-        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
-        {
-            if (itemIndex <= 0)
-            {
-                EquipItem(items.Length - 1);
-            }
-            else
-            {
-                EquipItem(itemIndex - 1);
             }
         }
     }
@@ -227,6 +218,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         currentHealth -= damage;
 
         healthBarImage.fillAmount = currentHealth / maxHealth;
+        healthText.text = $"{currentHealth}";
 
         if (currentHealth <= 0f)
         {
@@ -255,6 +247,28 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             scope.gameObject.SetActive(false);
             isScopeOn = false;
+        }
+    }
+
+    void ItemImageSwicth()
+    {
+        if (itemIndex == 0)
+        {
+            items[0].GetComponent<Gun>().gunUI.SetActive(true);
+            items[1].GetComponent<Gun>().gunUI.SetActive(false);
+            items[2].GetComponent<Gun>().gunUI.SetActive(false);
+        }
+        else if (itemIndex == 1)
+        {
+            items[0].GetComponent<Gun>().gunUI.SetActive(false);
+            items[1].GetComponent<Gun>().gunUI.SetActive(true);
+            items[2].GetComponent<Gun>().gunUI.SetActive(false);
+        }
+        else if (itemIndex == 2)
+        {
+            items[0].GetComponent<Gun>().gunUI.SetActive(false);
+            items[1].GetComponent<Gun>().gunUI.SetActive(false);
+            items[2].GetComponent<Gun>().gunUI.SetActive(true);
         }
     }
 }
