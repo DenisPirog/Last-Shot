@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private Vector3 moveAmount;
 
     private Rigidbody rb;
-    private Gun gun;
+    public Gun gun { get; private set; }
 
     private PhotonView PV;
 
