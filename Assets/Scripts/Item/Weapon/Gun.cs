@@ -3,13 +3,13 @@ using UnityEngine.UI;
 using Photon.Pun;
 
 public class Gun : MonoBehaviour
-{
-    [Header("Scripts")]
-
-    [SerializeField] private Recoil _recoilScript;
-
+{ 
     [Header("UI")]
     public GameObject gunUI;
+
+    [Header("GameObjects")]
+
+    public GameObject CameraHolder;
 
     [Header("Sounds")]
 
@@ -50,13 +50,6 @@ public class Gun : MonoBehaviour
     {
         amountOfAmmoSave = amountOfAmmo;
     }
-    private void Update()
-    {
-        textOfAmountOfAmmo.text = $"{amountOfAmmo} / {amountOfAmmoSave}";
-
-        _targetRotation = Vector3.Lerp(_targetRotation, Vector3.zero, _returnSpeed * Time.deltaTime);
-        _currentRotation = Vector3.Slerp(_currentRotation, _targetRotation, _snappiness * Time.deltaTime);
-    }
 
     [PunRPC]
     public void RPC_Shoot()
@@ -82,7 +75,7 @@ public class Gun : MonoBehaviour
             audioSource.clip = shootSound;
             audioSource.Play();
 
-            _recoilScript.RecoilFire();
+            RecoilFire();
         }
         else if (amountOfAmmo == 0 && audioSource != null)
         {
@@ -103,5 +96,25 @@ public class Gun : MonoBehaviour
     {
         amountOfAmmo = amountOfAmmoSave;
         audioSource.PlayOneShot(reloadSound);
+    }
+
+    public void RecoilFire()
+    {
+        _targetRotation += new Vector3(_recoilX,
+            Random.Range(-_recoilY, _recoilY),
+            Random.Range(-_recoilZ, _recoilZ));
+    }
+
+    public void UpdateText()
+    {
+        textOfAmountOfAmmo.text = $"{amountOfAmmo} / {amountOfAmmoSave}";
+    }
+
+    public void UpdateRecoil()
+    {
+        CameraHolder.transform.localRotation = Quaternion.Euler(_currentRotation);
+
+        _targetRotation = Vector3.Lerp(_targetRotation, Vector3.zero, _returnSpeed * Time.deltaTime);
+        _currentRotation = Vector3.Slerp(_currentRotation, _targetRotation, _snappiness * Time.deltaTime);
     }
 }

@@ -225,16 +225,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76033c612003b1d43ac9fe1ca1a85182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recoilScript: {fileID: 2614204041595676939}
+  gunUI: {fileID: 9067587431328808874}
+  CameraHolder: {fileID: 1301567549187283963}
+  shootSound: {fileID: 8300000, guid: fceb333e433c97e4497267e3c3a508c3, type: 3}
+  reloadSound: {fileID: 8300000, guid: b0d51244fd32fc647960320540b32f66, type: 3}
+  noAmmoSound: {fileID: 8300000, guid: 39a52c8570aa5ee4b8c76570a3eda151, type: 3}
+  audioSource: {fileID: 2945223479563241936}
   cam: {fileID: 7990534504221761440}
   damage: 20
   fireRate: 0.4
   amountOfAmmo: 20
   textOfAmountOfAmmo: {fileID: 2000483107392244056}
-  shootSound: {fileID: 8300000, guid: fceb333e433c97e4497267e3c3a508c3, type: 3}
-  reloadSound: {fileID: 8300000, guid: b0d51244fd32fc647960320540b32f66, type: 3}
-  noAmmoSound: {fileID: 8300000, guid: 39a52c8570aa5ee4b8c76570a3eda151, type: 3}
-  audioSource: {fileID: 2945223479563241936}
   _currentRotation: {x: 0, y: 0, z: 0}
   _targetRotation: {x: 0, y: 0, z: 0}
   _recoilX: 0
@@ -242,7 +243,6 @@ MonoBehaviour:
   _recoilZ: 0
   _snappiness: 0
   _returnSpeed: 0
-  gunUI: {fileID: 9067587431328808874}
   amountOfAmmoSave: 0
 --- !u!1 &1069139156977916764
 GameObject:
@@ -403,7 +403,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7579207002847369913}
-  - component: {fileID: 2614204041595676939}
   m_Layer: 0
   m_Name: CameraRecoil
   m_TagString: Untagged
@@ -422,23 +421,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1572466876642197627}
   - {fileID: 7990534504221761442}
   m_Father: {fileID: 7990534503757487994}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2614204041595676939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301567549187283963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aad53241a9a6a864cb1bf2dd7f56c562, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerController: {fileID: 7990534504149774472}
 --- !u!1 &1313778622484534208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,16 +1313,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76033c612003b1d43ac9fe1ca1a85182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recoilScript: {fileID: 2614204041595676939}
+  gunUI: {fileID: 8445115338508561876}
+  CameraHolder: {fileID: 1301567549187283963}
+  shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
+  reloadSound: {fileID: 8300000, guid: f7ce534a0633b9847910ba117e2245d1, type: 3}
+  noAmmoSound: {fileID: 8300000, guid: 031057f31153d6e4da071a851d29e9e2, type: 3}
+  audioSource: {fileID: 2945223479563241936}
   cam: {fileID: 7990534504221761440}
   damage: 100
   fireRate: 1.5
   amountOfAmmo: 10
   textOfAmountOfAmmo: {fileID: 2000483107392244056}
-  shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
-  reloadSound: {fileID: 8300000, guid: f7ce534a0633b9847910ba117e2245d1, type: 3}
-  noAmmoSound: {fileID: 8300000, guid: 031057f31153d6e4da071a851d29e9e2, type: 3}
-  audioSource: {fileID: 2945223479563241936}
   _currentRotation: {x: 0, y: 0, z: 0}
   _targetRotation: {x: 0, y: 0, z: 0}
   _recoilX: 0
@@ -1343,7 +1331,6 @@ MonoBehaviour:
   _recoilZ: 0
   _snappiness: 0
   _returnSpeed: 0
-  gunUI: {fileID: 8445115338508561876}
   amountOfAmmoSave: 0
 --- !u!1 &5325265241442083246
 GameObject:
@@ -1574,16 +1561,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76033c612003b1d43ac9fe1ca1a85182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recoilScript: {fileID: 2614204041595676939}
+  gunUI: {fileID: 3478965933038898664}
+  CameraHolder: {fileID: 1301567549187283963}
+  shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
+  reloadSound: {fileID: 8300000, guid: f7ce534a0633b9847910ba117e2245d1, type: 3}
+  noAmmoSound: {fileID: 8300000, guid: 13f0d2cf3fe7b1744ada35cb7c1e1a4b, type: 3}
+  audioSource: {fileID: 2945223479563241936}
   cam: {fileID: 7990534504221761440}
   damage: 10
   fireRate: 0.1
   amountOfAmmo: 30
   textOfAmountOfAmmo: {fileID: 2000483107392244056}
-  shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
-  reloadSound: {fileID: 8300000, guid: f7ce534a0633b9847910ba117e2245d1, type: 3}
-  noAmmoSound: {fileID: 8300000, guid: 13f0d2cf3fe7b1744ada35cb7c1e1a4b, type: 3}
-  audioSource: {fileID: 2945223479563241936}
   _currentRotation: {x: 0, y: 0, z: 0}
   _targetRotation: {x: 0, y: 0, z: 0}
   _recoilX: -2
@@ -1591,7 +1579,6 @@ MonoBehaviour:
   _recoilZ: 0.35
   _snappiness: 6
   _returnSpeed: 2
-  gunUI: {fileID: 3478965933038898664}
   amountOfAmmoSave: 0
 --- !u!1 &7593563860244179047
 GameObject:
@@ -1781,7 +1768,7 @@ Transform:
   - {fileID: 2296514710671313428}
   - {fileID: 2169349979050596709}
   - {fileID: 1934386537549959004}
-  m_Father: {fileID: 7990534504221761442}
+  m_Father: {fileID: 7579207002847369913}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7990534503757487995
@@ -2126,10 +2113,9 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1572466876642197627}
+  m_Children: []
   m_Father: {fileID: 7579207002847369913}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &7990534504221761440
 Camera:

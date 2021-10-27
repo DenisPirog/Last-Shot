@@ -78,6 +78,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Die();
         }
 
+        UpdateRecoil();
+        UpdateAmmoText();
         ItemImageSwicth();
         Shoot();
         HideCrosshair();
@@ -89,6 +91,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         Scope();
     }
 
+    void UpdateRecoil()
+    {
+        gun.UpdateRecoil();
+    }
+
+    void UpdateAmmoText()
+    {
+        gun.UpdateText();
+    }
     void Shoot()
     {
         if (Input.GetMouseButton(0))
