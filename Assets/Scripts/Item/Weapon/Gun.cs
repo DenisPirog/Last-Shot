@@ -6,10 +6,12 @@ public class Gun : MonoBehaviour
 { 
     [Header("UI")]
     public GameObject gunUI;
+    [SerializeField] private Text textOfAmountOfAmmo;
 
     [Header("GameObjects")]
 
     public GameObject CameraHolder;
+    [SerializeField] private Camera cam;
 
     [Header("Sounds")]
 
@@ -20,11 +22,11 @@ public class Gun : MonoBehaviour
 
     [Header("Weapon Settings")]
 
-    [SerializeField] private Camera cam;
+
     [SerializeField] private float damage;
     [SerializeField] private float fireRate = 0.1f; // 1f = 1second
     public int amountOfAmmo;
-    [SerializeField] private Text textOfAmountOfAmmo;
+
 
     //Rotations
     [HideInInspector] public Vector3 _currentRotation;
