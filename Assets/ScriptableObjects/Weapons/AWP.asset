@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10f3346b49a5d2a438c3313ef67355ab, type: 3}
-  m_Name: Pistol
+  m_Name: AWP
   m_EditorClassIdentifier: 
   shootSound: {fileID: 0}
   reloadSound: {fileID: 0}
   noAmmoSound: {fileID: 0}
-  weaponName: Pistol
-  damage: 20
-  fireRate: 0.4
-  amountOfAmmo: 20
-  recoilX: -3
-  recoilY: 1
+  weaponName: AWP
+  damage: 100
+  fireRate: 1
+  amountOfAmmo: 5
+  recoilX: -5
+  recoilY: 0
   recoilZ: 0.35
-  snappiness: 4
+  snappiness: 0
   returnSpeed: 3
