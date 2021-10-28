@@ -230,22 +230,8 @@ MonoBehaviour:
   textOfAmountOfAmmo: {fileID: 2000483107392244056}
   CameraHolder: {fileID: 7990534503757487995}
   cam: {fileID: 7990534504221761440}
-  PlayerPrefab: {fileID: 0}
-  shootSound: {fileID: 8300000, guid: fceb333e433c97e4497267e3c3a508c3, type: 3}
-  reloadSound: {fileID: 8300000, guid: b0d51244fd32fc647960320540b32f66, type: 3}
-  noAmmoSound: {fileID: 8300000, guid: 39a52c8570aa5ee4b8c76570a3eda151, type: 3}
   audioSource: {fileID: 2945223479563241936}
-  damage: 20
-  fireRate: 0.4
-  amountOfAmmo: 20
-  _currentRotation: {x: 0, y: 0, z: 0}
-  _targetRotation: {x: 0, y: 0, z: 0}
-  _recoilX: 0
-  _recoilY: 0
-  _recoilZ: 0
-  _snappiness: 0
-  _returnSpeed: 0
-  amountOfAmmoSave: 0
+  weaponData: {fileID: 11400000, guid: ab08cb19b1ad87643be894cd8ff83775, type: 2}
 --- !u!1 &1069139156977916764
 GameObject:
   m_ObjectHideFlags: 0
@@ -1287,22 +1273,8 @@ MonoBehaviour:
   textOfAmountOfAmmo: {fileID: 2000483107392244056}
   CameraHolder: {fileID: 7990534503757487995}
   cam: {fileID: 7990534504221761440}
-  PlayerPrefab: {fileID: 0}
-  shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
-  reloadSound: {fileID: 8300000, guid: f7ce534a0633b9847910ba117e2245d1, type: 3}
-  noAmmoSound: {fileID: 8300000, guid: 031057f31153d6e4da071a851d29e9e2, type: 3}
   audioSource: {fileID: 2945223479563241936}
-  damage: 100
-  fireRate: 1.5
-  amountOfAmmo: 10
-  _currentRotation: {x: 0, y: 0, z: 0}
-  _targetRotation: {x: 0, y: 0, z: 0}
-  _recoilX: 0
-  _recoilY: 0
-  _recoilZ: 0
-  _snappiness: 0
-  _returnSpeed: 0
-  amountOfAmmoSave: 0
+  weaponData: {fileID: 0}
 --- !u!1 &5325265241442083246
 GameObject:
   m_ObjectHideFlags: 0
@@ -1536,22 +1508,8 @@ MonoBehaviour:
   textOfAmountOfAmmo: {fileID: 2000483107392244056}
   CameraHolder: {fileID: 7990534503757487995}
   cam: {fileID: 7990534504221761440}
-  PlayerPrefab: {fileID: 0}
-  shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
-  reloadSound: {fileID: 8300000, guid: f7ce534a0633b9847910ba117e2245d1, type: 3}
-  noAmmoSound: {fileID: 8300000, guid: 13f0d2cf3fe7b1744ada35cb7c1e1a4b, type: 3}
   audioSource: {fileID: 2945223479563241936}
-  damage: 10
-  fireRate: 0.1
-  amountOfAmmo: 30
-  _currentRotation: {x: 0, y: 0, z: 0}
-  _targetRotation: {x: 0, y: 0, z: 0}
-  _recoilX: -2
-  _recoilY: 2
-  _recoilZ: 0.35
-  _snappiness: 6
-  _returnSpeed: 2
-  amountOfAmmoSave: 0
+  weaponData: {fileID: 11400000, guid: c0cb8383cbde4284c9420a452eaaafbc, type: 2}
 --- !u!1 &7593563860244179047
 GameObject:
   m_ObjectHideFlags: 0

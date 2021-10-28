@@ -6,61 +6,74 @@ public class Gun : MonoBehaviour
 { 
     [Header("UI")]
     public GameObject gunUI;
-    [SerializeField] private Text textOfAmountOfAmmo;
+    public Text textOfAmountOfAmmo;
 
-    [Header("GameObjects")]
+    [Header("Game Objects")]
 
     public GameObject CameraHolder;
-    [SerializeField] private Camera cam;
+    public Camera cam;
 
-    [Header("Sounds")]
+    [Header("Audio Source")]
+    public AudioSource audioSource;
 
-    [SerializeField] private AudioClip shootSound;
-    [SerializeField] private AudioClip reloadSound;
-    [SerializeField] private AudioClip noAmmoSound;
-    [SerializeField] private AudioSource audioSource;
-
-    [Header("Weapon Settings")]
+    [Header("DATA")]
+    public WeaponData weaponData;
 
 
-    [SerializeField] private float damage;
-    [SerializeField] private float fireRate = 0.1f; // 1f = 1second
-    public int amountOfAmmo;
+    private AudioClip _shootSound;
+    private AudioClip _reloadSound;
+    private AudioClip _noAmmoSound;
+
+    private float _damage;
+    private float _fireRate = 0.1f; // 1f = 1second
+    private int _amountOfAmmo;
+
+    private float _recoilX;
+    private float _recoilY;
+    private float _recoilZ;
+
+    private float _snappiness;
+    private float _returnSpeed;
 
 
     //Rotations
-    [HideInInspector] public Vector3 _currentRotation;
-    [HideInInspector] public Vector3 _targetRotation;
-
-    [Header("Recoil Values")]
-
-    public float _recoilX;
-    public float _recoilY;
-    public float _recoilZ;
-
-
-    [Header("Recoil Settings")]
-
-    public float _snappiness;
-    public float _returnSpeed;
+    private Vector3 _currentRotation;
+    private Vector3 _targetRotation;
 
     private float _nextTimeToFire = 0f;
 
-    [HideInInspector] public int amountOfAmmoSave;
+    private int amountOfAmmoSave;
 
     private void Awake()
     {
-        amountOfAmmoSave = amountOfAmmo;
+        _shootSound = weaponData.shootSound;
+        _reloadSound = weaponData.reloadSound;
+        _noAmmoSound = weaponData.noAmmoSound;
+
+        _damage = weaponData.damage;
+        _fireRate = weaponData.fireRate;
+        _amountOfAmmo = weaponData.amountOfAmmo;
+
+        _recoilX = weaponData.recoilX;
+        _recoilY = weaponData.recoilY;
+        _recoilZ = weaponData.recoilZ;
+
+        _snappiness = weaponData.snappiness;
+        _returnSpeed = weaponData.returnSpeed;
+    }
+    private void Start()
+    {
+        amountOfAmmoSave = _amountOfAmmo;
     }
 
     [PunRPC]
     public void RPC_Shoot(string actor)
     {
-        if (Time.time >= _nextTimeToFire && amountOfAmmo != 0)
+        if (Time.time >= _nextTimeToFire && _amountOfAmmo != 0)
         {
-            audioSource.PlayOneShot(shootSound);
+            audioSource.PlayOneShot(_shootSound);
 
-            _nextTimeToFire = Time.time + fireRate;           
+            _nextTimeToFire = Time.time + _fireRate;           
 
             Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
             ray.origin = cam.transform.position;
@@ -69,26 +82,26 @@ public class Gun : MonoBehaviour
             {
                 hit.collider.gameObject
                     .GetComponent<IDamageable>()?
-                    .TakeDamage(damage, actor);
+                    .TakeDamage(_damage, actor);
 
             }
-            amountOfAmmo -= 1;
+            _amountOfAmmo -= 1;
 
             audioSource.Stop();
-            audioSource.clip = shootSound;
+            audioSource.clip = _shootSound;
             audioSource.Play();
 
             RecoilFire();
         }
-        else if (amountOfAmmo == 0 && audioSource != null)
+        else if (_amountOfAmmo == 0 && audioSource != null)
         {
-            audioSource.PlayOneShot(noAmmoSound);
+            audioSource.PlayOneShot(_noAmmoSound);
         }
     }
 
     public bool TryReload()
     {
-        if (amountOfAmmo == amountOfAmmoSave)
+        if (_amountOfAmmo == amountOfAmmoSave)
             return false;
         
         Reload();
@@ -97,8 +110,8 @@ public class Gun : MonoBehaviour
     
     private void Reload()
     {
-        amountOfAmmo = amountOfAmmoSave;
-        audioSource.PlayOneShot(reloadSound);
+        _amountOfAmmo = amountOfAmmoSave;
+        audioSource.PlayOneShot(_reloadSound);
     }
 
     public void RecoilFire()
@@ -110,7 +123,7 @@ public class Gun : MonoBehaviour
 
     public void UpdateText()
     {
-        textOfAmountOfAmmo.text = $"{amountOfAmmo} / {amountOfAmmoSave}";
+        textOfAmountOfAmmo.text = $"{_amountOfAmmo} / {amountOfAmmoSave}";
     }
 
     public void UpdateRecoil()
