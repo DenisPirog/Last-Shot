@@ -2052,6 +2052,8 @@ MonoBehaviour:
   - {fileID: 6708128443468306948}
   - {fileID: 235348569577616206}
   - {fileID: 5192151545841187988}
+  weaponSource: {fileID: 2945223479563241936}
+  zoomSound: {fileID: 8300000, guid: 9fdaeeef6f8128744834924fad0a13f0, type: 3}
   itemIndex: 0
   PV: {fileID: 0}
   currentHealth: 100
