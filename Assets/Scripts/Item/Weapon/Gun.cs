@@ -52,7 +52,7 @@ public class Gun : MonoBehaviour
     }
 
     [PunRPC]
-    public void RPC_Shoot()
+    public void RPC_Shoot(string actor)
     {
         if (Time.time >= _nextTimeToFire && amountOfAmmo != 0)
         {
@@ -67,7 +67,8 @@ public class Gun : MonoBehaviour
             {
                 hit.collider.gameObject
                     .GetComponent<IDamageable>()?
-                    .TakeDamage(damage);
+                    .TakeDamage(damage, actor);
+
             }
             amountOfAmmo -= 1;
 
@@ -117,4 +118,5 @@ public class Gun : MonoBehaviour
         _targetRotation = Vector3.Lerp(_targetRotation, Vector3.zero, _returnSpeed * Time.deltaTime);
         _currentRotation = Vector3.Slerp(_currentRotation, _targetRotation, _snappiness * Time.deltaTime);
     }
+
 }

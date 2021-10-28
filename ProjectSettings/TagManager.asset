@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Target
+  - Metal
+  - ExplosiveBarrel
+  - AK-47
+  - Glock-18
+  - AWP
   layers:
   - Default
   - TransparentFX

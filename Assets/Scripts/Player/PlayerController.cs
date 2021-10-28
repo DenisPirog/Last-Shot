@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] private Image healthBarImage;
     [SerializeField] private Image crosshair;
     [SerializeField] private Text healthText;
+    [SerializeField] private GameObject KillTab;
 
     [Header("Settings")]
     [SerializeField] float mouseSensitivity;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     [Header("Items")]
     [SerializeField] private GameObject[] items;
+
 
     [HideInInspector] public int itemIndex;
     private int previousItemIndex = -1;
@@ -35,10 +37,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private Rigidbody rb;
     public Gun gun { get; private set; }
 
-    private PhotonView PV;
+    [HideInInspector] public PhotonView PV;
 
     private const float maxHealth = 100f;
-    private float currentHealth = maxHealth;
+    [HideInInspector] public float currentHealth = maxHealth;
 
     private PlayerManager playerManager;
 
@@ -100,11 +102,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         gun.UpdateText();
     }
+
     void Shoot()
     {
         if (Input.GetMouseButton(0))
         {
-            gun.RPC_Shoot();
+            gun.RPC_Shoot(PV.Owner.NickName);
         }
     }
 
@@ -215,13 +218,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, string actor)
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage, actor);
     }
 
     [PunRPC]
-    void RPC_TakeDamage(float damage)
+    void RPC_TakeDamage(float damage, string actor)
     {
         if (!PV.IsMine)
         {
@@ -236,6 +239,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (currentHealth <= 0f)
         {
             Die();
+            KillTab.GetComponent<KillTab>().InstantiatingAndSetUp(itemIndex, actor, PV.Owner.NickName);
         }
     }
 
