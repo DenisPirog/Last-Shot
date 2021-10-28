@@ -228,8 +228,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunUI: {fileID: 9067587431328808874}
   textOfAmountOfAmmo: {fileID: 2000483107392244056}
-  CameraHolder: {fileID: 7990534503757487995}
+  CameraHolder: {fileID: 6940588794952646651}
   cam: {fileID: 7990534504221761440}
+
+
+  shootSound: {fileID: 8300000, guid: fceb333e433c97e4497267e3c3a508c3, type: 3}
+  reloadSound: {fileID: 8300000, guid: b0d51244fd32fc647960320540b32f66, type: 3}
+  noAmmoSound: {fileID: 8300000, guid: 39a52c8570aa5ee4b8c76570a3eda151, type: 3}
+
   audioSource: {fileID: 2945223479563241936}
   weaponData: {fileID: 11400000, guid: ab08cb19b1ad87643be894cd8ff83775, type: 2}
 --- !u!1 &1069139156977916764
@@ -1271,8 +1277,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunUI: {fileID: 8445115338508561876}
   textOfAmountOfAmmo: {fileID: 2000483107392244056}
-  CameraHolder: {fileID: 7990534503757487995}
+  CameraHolder: {fileID: 6940588794952646651}
   cam: {fileID: 7990534504221761440}
+
+
+  shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
+  reloadSound: {fileID: 8300000, guid: f7ce534a0633b9847910ba117e2245d1, type: 3}
+  noAmmoSound: {fileID: 8300000, guid: 031057f31153d6e4da071a851d29e9e2, type: 3}
+
   audioSource: {fileID: 2945223479563241936}
   weaponData: {fileID: 0}
 --- !u!1 &5325265241442083246
@@ -1506,10 +1518,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunUI: {fileID: 3478965933038898664}
   textOfAmountOfAmmo: {fileID: 2000483107392244056}
-  CameraHolder: {fileID: 7990534503757487995}
+  CameraHolder: {fileID: 6940588794952646651}
   cam: {fileID: 7990534504221761440}
-  audioSource: {fileID: 2945223479563241936}
   weaponData: {fileID: 11400000, guid: c0cb8383cbde4284c9420a452eaaafbc, type: 2}
+  shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
+  reloadSound: {fileID: 8300000, guid: f7ce534a0633b9847910ba117e2245d1, type: 3}
+  noAmmoSound: {fileID: 8300000, guid: 13f0d2cf3fe7b1744ada35cb7c1e1a4b, type: 3}
+  audioSource: {fileID: 2945223479563241936}
+  damage: 10
+  fireRate: 0.1
+  amountOfAmmo: 30
+  _currentRotation: {x: 0, y: 0, z: 0}
+  _targetRotation: {x: 0, y: 0, z: 0}
+  _recoilX: -2
+  _recoilY: 2
+  _recoilZ: 0.35
+  _snappiness: 6
+  _returnSpeed: 2
+  amountOfAmmoSave: 0
+--- !u!1 &6940588794952646651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5944172028114062761}
+  m_Layer: 0
+  m_Name: CameraRecoil
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5944172028114062761
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940588794952646651}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7990534504221761442}
+  - {fileID: 1572466876642197627}
+  m_Father: {fileID: 7990534503757487994}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7593563860244179047
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,7 +1873,7 @@ Transform:
   - {fileID: 2296514710671313428}
   - {fileID: 2169349979050596709}
   - {fileID: 1934386537549959004}
-  m_Father: {fileID: 7990534503757487994}
+  m_Father: {fileID: 5944172028114062761}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7990534503757487995
@@ -1845,8 +1903,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7990534504221761442}
-  - {fileID: 1572466876642197627}
+  - {fileID: 5944172028114062761}
   m_Father: {fileID: 7990534504149774706}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2165,7 +2222,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7990534503757487994}
+  m_Father: {fileID: 5944172028114062761}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &7990534504221761440
