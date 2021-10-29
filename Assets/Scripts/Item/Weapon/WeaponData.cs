@@ -8,6 +8,9 @@ public class WeaponData : ScriptableObject
     public AudioClip reloadSound;
     public AudioClip noAmmoSound;
 
+    [Header("Game Objects")]
+    public GameObject bulletImpact;
+
     [Header("Main Settings")]
     public string weaponName;
     public float damage;

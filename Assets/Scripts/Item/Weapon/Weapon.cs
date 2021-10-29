@@ -27,6 +27,8 @@ public class Weapon : MonoBehaviour
     private AudioClip _reloadSound;
     private AudioClip _noAmmoSound;
 
+    private GameObject bulletImpact;
+
     private float _damage;
     private float _fireRate = 0.1f; // 1f = 1second
     private int _amountOfAmmo;
@@ -52,6 +54,8 @@ public class Weapon : MonoBehaviour
         _shootSound = weaponData.shootSound;
         _reloadSound = weaponData.reloadSound;
         _noAmmoSound = weaponData.noAmmoSound;
+
+        bulletImpact = weaponData.bulletImpact;
 
         _damage = weaponData.damage;
         _fireRate = weaponData.fireRate;
@@ -88,15 +92,18 @@ public class Weapon : MonoBehaviour
                 hit.collider.gameObject
                     .GetComponent<IDamageable>()?
                     .TakeDamage(_damage);
-
+                _amountOfAmmo -= 1;
+                RecoilFire();
+                GameObject impact = Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impact, 3f);
             }
-            _amountOfAmmo -= 1;
+
 
             audioSource.Stop();
             audioSource.clip = _shootSound;
             audioSource.Play();
 
-            RecoilFire();
+
         }
         else if (_amountOfAmmo == 0 && audioSource != null)
         {
