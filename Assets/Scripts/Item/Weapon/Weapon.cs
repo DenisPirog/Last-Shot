@@ -16,6 +16,9 @@ public class Weapon : MonoBehaviour
     [Header("Audio Source")]
     public AudioSource audioSource;
 
+    [Header("Particle System")]
+    public ParticleSystem muzzleFlash;
+
     [Header("DATA")]
     public WeaponData weaponData;
 
@@ -72,6 +75,8 @@ public class Weapon : MonoBehaviour
         if (Time.time >= _nextTimeToFire && _amountOfAmmo != 0)
         {
             audioSource.PlayOneShot(_shootSound);
+            if(muzzleFlash != null)
+                muzzleFlash.Play();
 
             _nextTimeToFire = Time.time + _fireRate;           
 

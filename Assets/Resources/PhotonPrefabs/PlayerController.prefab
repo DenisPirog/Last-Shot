@@ -230,6 +230,7 @@ MonoBehaviour:
   CameraHolder: {fileID: 6940588794952646651}
   cam: {fileID: 7990534504221761440}
   audioSource: {fileID: 2945223479563241936}
+  muzzleFlash: {fileID: 0}
   weaponData: {fileID: 11400000, guid: ab08cb19b1ad87643be894cd8ff83775, type: 2}
 --- !u!1 &1069139156977916764
 GameObject:
@@ -1537,6 +1538,7 @@ MonoBehaviour:
   CameraHolder: {fileID: 6940588794952646651}
   cam: {fileID: 7990534504221761440}
   audioSource: {fileID: 2945223479563241936}
+  muzzleFlash: {fileID: 0}
   weaponData: {fileID: 11400000, guid: a7c5a5e80fa6765408b719fa55944c21, type: 2}
 --- !u!1 &5325265241442083246
 GameObject:
@@ -1772,6 +1774,7 @@ MonoBehaviour:
   CameraHolder: {fileID: 6940588794952646651}
   cam: {fileID: 7990534504221761440}
   audioSource: {fileID: 2945223479563241936}
+  muzzleFlash: {fileID: 5313665208631735599}
   weaponData: {fileID: 11400000, guid: c0cb8383cbde4284c9420a452eaaafbc, type: 2}
 --- !u!1 &6940588794952646651
 GameObject:
@@ -2996,8 +2999,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 354633675934086874, guid: 0ed9f52c10b9e7c4bab761c161e9ef80, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 354633675934086874, guid: 0ed9f52c10b9e7c4bab761c161e9ef80, type: 3}
+      propertyPath: lengthInSec
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 354633675934086874, guid: 0ed9f52c10b9e7c4bab761c161e9ef80, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2619284690877557061, guid: 0ed9f52c10b9e7c4bab761c161e9ef80, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2619284690877557061, guid: 0ed9f52c10b9e7c4bab761c161e9ef80, type: 3}
+      propertyPath: lengthInSec
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2619284690877557061, guid: 0ed9f52c10b9e7c4bab761c161e9ef80, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2743265362597966599, guid: 0ed9f52c10b9e7c4bab761c161e9ef80, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2743265362597966599, guid: 0ed9f52c10b9e7c4bab761c161e9ef80, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ed9f52c10b9e7c4bab761c161e9ef80, type: 3}
+--- !u!198 &5313665208631735599 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 354633675934086874, guid: 0ed9f52c10b9e7c4bab761c161e9ef80, type: 3}
+  m_PrefabInstance: {fileID: 5572649464422302709}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7649598298252298351
 PrefabInstance:
   m_ObjectHideFlags: 0
