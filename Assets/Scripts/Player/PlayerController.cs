@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [Header("Items")]
     [SerializeField] private GameObject[] items;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource weaponSource;
+    [SerializeField] private AudioClip zoomSound;
 
     [HideInInspector] public int itemIndex;
     private int previousItemIndex = -1;
@@ -75,35 +78,53 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             return;
         }
 
+        TryDieInVoid();
+
+        TryUpdateRecoil();
+        TryUpdateAmmoText();
+        
+        TryLook();
+        TryMove();
+        TryJump();
+
+        TrySwitchItem();
+        TrySwicthItemImage();
+
+        TryShoot();
+        TryReload();
+        TryScope();
+        TryHideCrosshair();
+    }
+
+    private void TryDieInVoid()
+    {
         if (transform.position.y < -10f)
         {
             Die();
         }
-
-        UpdateRecoil();
-        UpdateAmmoText();
-        ItemImageSwicth();
-        Shoot();
-        HideCrosshair();
-        Reload();
-        Look();
-        Move();
-        Jump();
-        SwitchItem();
-        Scope();
     }
 
-    void UpdateRecoil()
+    private void FixedUpdate()
+    {
+        if (!PV.IsMine)
+        {
+            return;
+        }
+
+        rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+    }
+
+    private void TryUpdateRecoil()
     {
         gun.UpdateRecoil();
     }
 
-    void UpdateAmmoText()
+    private void TryUpdateAmmoText()
     {
         gun.UpdateText();
     }
 
-    void Shoot()
+    private void TryShoot()
     {
         if (Input.GetMouseButton(0))
         {
@@ -111,7 +132,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
-    void HideCrosshair()
+    private void TryHideCrosshair()
     {
         if (itemIndex == 2)
         {
@@ -123,7 +144,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
-    void Reload()
+    private void TryReload()
     {
         if (Input.GetKeyDown(KeyCode.R) )
         {
@@ -131,14 +152,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
-    void Move()
+    private void TryMove()
     {
         Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
 
         moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed), ref smoothMoveVelocity, smoothTime);
     }
 
-    void Look()
+    private void TryLook()
     {
         transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
 
@@ -148,7 +169,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRotation;
     }
 
-    void Jump()
+    private void TryJump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
         {
@@ -156,7 +177,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
-    void EquipItem(int _index)
+    private void EquipItem(int _index)
     {
         if (_index == previousItemIndex)
         {
@@ -183,7 +204,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
-    void SwitchItem()
+    private void TrySwitchItem()
     {
         for (int i = 0; i < items.Length; i++)
         {
@@ -208,23 +229,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         grounded = _grounded;
     }
 
-    private void FixedUpdate()
+    public void TakeDamage(float damage)
     {
-        if (!PV.IsMine)
-        {
-            return;
-        }
-
-        rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
-    }
-
-    public void TakeDamage(float damage, string actor)
-    {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage, actor);
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
     }
 
     [PunRPC]
-    void RPC_TakeDamage(float damage, string actor)
+    private void RPC_TakeDamage(float damage)
     {
         if (!PV.IsMine)
         {
@@ -239,21 +250,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (currentHealth <= 0f)
         {
             Die();
-            KillTab.GetComponent<KillTab>().InstantiatingAndSetUp(itemIndex, actor, PV.Owner.NickName);
         }
     }
 
-    void Die()
+    private void Die()
     {
         playerManager.Die();
     }
 
-    private void Scope()
+    private void TryScope()
     {
         if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == false)
         {
             scope.gameObject.SetActive(true);
             isScopeOn = true;
+            weaponSource.PlayOneShot(zoomSound);
         }
         else if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == true)
         {
@@ -267,25 +278,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
-    void ItemImageSwicth()
+    private void TrySwicthItemImage()
     {
-        if (itemIndex == 0)
+        for (int i = 0; i < items.Length; i++)
         {
-            items[0].GetComponent<Gun>().gunUI.SetActive(true);
-            items[1].GetComponent<Gun>().gunUI.SetActive(false);
-            items[2].GetComponent<Gun>().gunUI.SetActive(false);
-        }
-        else if (itemIndex == 1)
-        {
-            items[0].GetComponent<Gun>().gunUI.SetActive(false);
-            items[1].GetComponent<Gun>().gunUI.SetActive(true);
-            items[2].GetComponent<Gun>().gunUI.SetActive(false);
-        }
-        else if (itemIndex == 2)
-        {
-            items[0].GetComponent<Gun>().gunUI.SetActive(false);
-            items[1].GetComponent<Gun>().gunUI.SetActive(false);
-            items[2].GetComponent<Gun>().gunUI.SetActive(true);
+            if (i != itemIndex)
+            {
+                items[i].GetComponent<Gun>().gunUI.SetActive(false);
+            }
+            else if (i == itemIndex)
+            {
+                items[i].GetComponent<Gun>().gunUI.SetActive(true);
+            }
         }
     }
 }

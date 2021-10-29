@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 22474c4519b70264397e91aed3ab00fb
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - GHOST BRUSH
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 29b7f8aeba96b554dab5d6b757fe5184, type: 3}
+  - {fileID: 12800000, guid: ecfb345380e8d984984a726c46d56a24, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
