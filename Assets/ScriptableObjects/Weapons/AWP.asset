@@ -17,10 +17,10 @@ MonoBehaviour:
   noAmmoSound: {fileID: 0}
   weaponName: AWP
   damage: 100
-  fireRate: 1
+  fireRate: 2
   amountOfAmmo: 5
-  recoilX: -5
+  recoilX: -10
   recoilY: 0
   recoilZ: 0.35
-  snappiness: 0
+  snappiness: 5
   returnSpeed: 3
