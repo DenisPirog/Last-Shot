@@ -82,7 +82,7 @@ public class Gun : MonoBehaviour
             {
                 hit.collider.gameObject
                     .GetComponent<IDamageable>()?
-                    .TakeDamage(_damage, actor);
+                    .TakeDamage(_damage);
 
             }
             _amountOfAmmo -= 1;

@@ -229,13 +229,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         grounded = _grounded;
     }
 
-    public void TakeDamage(float damage, string actor)
+    public void TakeDamage(float damage)
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage, actor);
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
     }
 
     [PunRPC]
-    private void RPC_TakeDamage(float damage, string actor)
+    private void RPC_TakeDamage(float damage)
     {
         if (!PV.IsMine)
         {
@@ -250,7 +250,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (currentHealth <= 0f)
         {
             Die();
-            KillTab.GetComponent<KillTab>().InstantiatingAndSetUp(itemIndex, actor, PV.Owner.NickName);
         }
     }
 
