@@ -3,6 +3,7 @@ using Photon.Pun;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Photon.Realtime;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
@@ -26,8 +27,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] private GameObject[] items;
 
     [Header("Audio")]
-    [SerializeField] private AudioSource weaponSource;
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip zoomSound;
+    [SerializeField] private AudioClip hurt;
+
+    [Header("Health")]
+    [SerializeField] private Image BloodEffect;
+    [SerializeField] private float hurtTimer = 0.1f;
+
+    private const float maxHealth = 100f;
+    [HideInInspector] public float currentHealth = maxHealth;
 
     [HideInInspector] public int itemIndex;
     private int previousItemIndex = -1;
@@ -40,10 +49,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private Rigidbody rb;
     public Weapon gun { get; private set; }
 
-    [HideInInspector] public PhotonView PV;
-
-    private const float maxHealth = 100f;
-    [HideInInspector] public float currentHealth = maxHealth;
+    [HideInInspector] public PhotonView PV;  
 
     private PlayerManager playerManager;
 
@@ -82,10 +88,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         TryUpdateRecoil();
         TryUpdateAmmoText();
-        
-        TryLook();
-        TryMove();
-        TryJump();
 
         TrySwitchItem();
         TrySwicthItemImage();
@@ -94,6 +96,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         TryReload();
         TryScope();
         TryHideCrosshair();
+        TryLook();
+        TryMove();
+        TryJump();
     }
 
     private void TryDieInVoid()
@@ -241,8 +246,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             return;
         }
-
         currentHealth -= damage;
+
+        //HurtTimer();
+        HealthUpdate();
 
         healthBarImage.fillAmount = currentHealth / maxHealth;
         healthText.text = $"{currentHealth}";
@@ -264,7 +271,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             scope.gameObject.SetActive(true);
             isScopeOn = true;
-            weaponSource.PlayOneShot(zoomSound);
+            audioSource.PlayOneShot(zoomSound);
         }
         else if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == true)
         {
@@ -291,5 +298,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 items[i].GetComponent<Weapon>().gunUI.SetActive(true);
             }
         }
+    }
+
+    private void HealthUpdate()
+    {
+        Color bloodEffectColor = BloodEffect.color;
+        bloodEffectColor.a = 1 - (currentHealth / maxHealth);
+        BloodEffect.color = bloodEffectColor;
+    }
+
+    private IEnumerator HurtTimer()
+    {
+        BloodEffect.gameObject.SetActive(true);
+        audioSource.PlayOneShot(hurt);
+        yield return new WaitForSeconds(hurtTimer);
+        BloodEffect.gameObject.SetActive(false);
     }
 }

@@ -94,8 +94,11 @@ public class Weapon : MonoBehaviour
                     .TakeDamage(_damage);
                 _amountOfAmmo -= 1;
                 RecoilFire();
-                GameObject impact = Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
-                Destroy(impact, 3f);
+                if (hit.collider.gameObject.GetComponent<IDamageable>() == null)
+                {
+                    GameObject impact = Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+                    Destroy(impact, 3f);
+                }              
             }
 
 
