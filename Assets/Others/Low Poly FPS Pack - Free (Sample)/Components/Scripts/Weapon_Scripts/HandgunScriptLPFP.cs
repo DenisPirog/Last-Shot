@@ -8,11 +8,11 @@ public class HandgunScriptLPFP : MonoBehaviour {
 	//Animator component attached to weapon
 	Animator anim;
 
-	[Header("Gun Camera")]
+	[Header("Weapon Camera")]
 	//Main gun camera
 	public Camera gunCamera;
 
-	[Header("Gun Camera Options")]
+	[Header("Weapon Camera Options")]
 	//How fast the camera field of view changes when aiming 
 	[Tooltip("How fast the camera field of view changes when aiming.")]
 	public float fovSpeed = 15.0f;

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class Gun : MonoBehaviour
+public class Weapon : MonoBehaviour
 { 
     [Header("UI")]
     public GameObject gunUI;

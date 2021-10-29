@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private Vector3 moveAmount;
 
     private Rigidbody rb;
-    public Gun gun { get; private set; }
+    public Weapon gun { get; private set; }
 
     [HideInInspector] public PhotonView PV;
 
@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
         
         itemIndex = _index;
-        gun = items[itemIndex].GetComponent<Gun>();
+        gun = items[itemIndex].GetComponent<Weapon>();
 
         items[itemIndex].SetActive(true);
 
@@ -284,11 +284,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             if (i != itemIndex)
             {
-                items[i].GetComponent<Gun>().gunUI.SetActive(false);
+                items[i].GetComponent<Weapon>().gunUI.SetActive(false);
             }
             else if (i == itemIndex)
             {
-                items[i].GetComponent<Gun>().gunUI.SetActive(true);
+                items[i].GetComponent<Weapon>().gunUI.SetActive(true);
             }
         }
     }
