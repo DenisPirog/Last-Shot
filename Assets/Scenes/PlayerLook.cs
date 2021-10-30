@@ -21,7 +21,13 @@ public class PlayerLook : MonoBehaviour
     float xRotation;
     float yRotation;
 
-    public void Look()
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void Update()
     {
         mouseX = Input.GetAxisRaw("Mouse X");
         mouseY = Input.GetAxisRaw("Mouse Y");

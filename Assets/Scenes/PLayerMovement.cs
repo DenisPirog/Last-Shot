@@ -64,19 +64,26 @@ public class PLayerMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
     }
 
-    public void UpdateSlopeMoveDirection()
+    private void Update()
     {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        MyInput();
+        ControlDrag();
+        ControlSpeed();
+
+        if (Input.GetKeyDown(jumpKey) && isGrounded)
+        {
+            Jump();
+        }
+
         slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
     }
 
-    public void IsGrounded()
-    {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-    }
-
-    public void MyInput()
+    void MyInput()
     {
         horizontalMovement = Input.GetAxisRaw("Horizontal");
         verticalMovement = Input.GetAxisRaw("Vertical");
@@ -84,16 +91,16 @@ public class PLayerMovement : MonoBehaviour
         moveDirection = orientation.forward * verticalMovement + orientation.right * horizontalMovement;
     }
 
-    public void Jump()
+    void Jump()
     {
-        if (Input.GetKeyDown(jumpKey) && isGrounded)
+        if (isGrounded)
         {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
     }
 
-    public void ControlSpeed()
+    void ControlSpeed()
     {
         if (Input.GetKey(sprintKey) && isGrounded)
         {
@@ -105,7 +112,7 @@ public class PLayerMovement : MonoBehaviour
         }
     }
 
-    public void ControlDrag()
+    void ControlDrag()
     {
         if (isGrounded)
         {
@@ -117,7 +124,12 @@ public class PLayerMovement : MonoBehaviour
         }
     }
 
-    public void MovePlayer()
+    private void FixedUpdate()
+    {
+        MovePlayer();
+    }
+
+    void MovePlayer()
     {
         if (isGrounded && !OnSlope())
         {
@@ -132,4 +144,5 @@ public class PLayerMovement : MonoBehaviour
             rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
         }
     }
+ 
 }

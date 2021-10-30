@@ -10,12 +10,11 @@ TagManager:
   - AK-47
   - Glock-18
   - AWP
-  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - 
   - Water
   - UI
   - 

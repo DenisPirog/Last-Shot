@@ -43,13 +43,40 @@ public class WallRun : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    public void CheckWall()
+    void CheckWall()
     {
         wallLeft = Physics.Raycast(transform.position, -orientation.right, out leftWallHit, wallDistance);
         wallRight = Physics.Raycast(transform.position, orientation.right, out rightWallHit, wallDistance);
     }
 
-    public void StartWallRun()
+    private void Update()
+    {
+        CheckWall();
+
+        if (CanWallRun())
+        {
+            if (wallLeft)
+            {
+                StartWallRun();
+                Debug.Log("wall running on the left");
+            }
+            else if (wallRight)
+            {
+                StartWallRun();
+                Debug.Log("wall running on the right");
+            }
+            else
+            {
+                StopWallRun();
+            }
+        }
+        else
+        {
+            StopWallRun();
+        }
+    }
+
+    void StartWallRun()
     {
         rb.useGravity = false;
 
@@ -80,37 +107,12 @@ public class WallRun : MonoBehaviour
         }
     }
 
-    public void StopWallRun()
+    void StopWallRun()
     {
         rb.useGravity = true;
 
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, wallRunfovTime * Time.deltaTime);
         tilt = Mathf.Lerp(tilt, 0, camTiltTime * Time.deltaTime);
-    }
-
-    public void WallRunUpdate()
-    {
-        if (CanWallRun())
-        {
-            if (wallLeft)
-            {
-                StartWallRun();
-                Debug.Log("wall running on the left");
-            }
-            else if (wallRight)
-            {
-                StartWallRun();
-                Debug.Log("wall running on the right");
-            }
-            else
-            {
-                StopWallRun();
-            }
-        }
-        else
-        {
-            StopWallRun();
-        }
     }
     
 }
