@@ -13,15 +13,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] private Image scope;
     [SerializeField] private Image healthBarImage;
     [SerializeField] private Image crosshair;
-    [SerializeField] private Text healthText;
-    [SerializeField] private GameObject KillTab;
-
-    [Header("Settings")]
-    [SerializeField] float mouseSensitivity;
-    [SerializeField] float sprintSpeed;
-    [SerializeField] float walkSpeed;
-    [SerializeField] float jumpForce;
-    [SerializeField] float smoothTime;
+    [SerializeField] private Text healthText; 
 
     [Header("Items")]
     [SerializeField] private GameObject[] items;
@@ -41,17 +33,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [HideInInspector] public int itemIndex;
     private int previousItemIndex = -1;
 
-    private float verticalLookRotation;
-    private bool grounded;
-    private Vector3 smoothMoveVelocity;
-    private Vector3 moveAmount;
-
     private Rigidbody rb;
     public Weapon gun { get; private set; }
-
+    private PlayerLook playerLook;
     [HideInInspector] public PhotonView PV;  
-
     private PlayerManager playerManager;
+    private PLayerMovement pLayerMovement;
+    private WallRun wallRun;
 
     private bool isScopeOn;
 
@@ -59,6 +47,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
+        playerLook = GetComponent<PlayerLook>();
+        pLayerMovement = GetComponent<PLayerMovement>();
+        wallRun = GetComponent<WallRun>();
 
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
     }
@@ -96,9 +87,26 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         TryReload();
         TryScope();
         TryHideCrosshair();
+        
         TryLook();
         TryMove();
         TryJump();
+        GroundCheck();
+        TryControlSpeed();
+        TryControlDrag();
+        TryUpdateSlopeMoveDirection();
+        TryCheckWall();
+        TryWallRunUpdate();
+    }
+
+    private void TryWallRunUpdate()
+    {
+        wallRun.WallRunUpdate();
+    }
+
+    private void TryCheckWall()
+    {
+        wallRun.CheckWall();
     }
 
     private void TryDieInVoid()
@@ -116,7 +124,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             return;
         }
 
-        rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+        pLayerMovement.MovePlayer();
     }
 
     private void TryUpdateRecoil()
@@ -159,27 +167,37 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     private void TryMove()
     {
-        Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-
-        moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed), ref smoothMoveVelocity, smoothTime);
+        pLayerMovement.MyInput();
     }
 
     private void TryLook()
     {
-        transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
-
-        verticalLookRotation += Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
-        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -90f, 90f);
-
-        cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRotation;
+        playerLook.Look();
     }
 
     private void TryJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
-        {
-            rb.AddForce(transform.up * jumpForce);
-        }
+        pLayerMovement.Jump();
+    }
+
+    private void TryControlSpeed()
+    {
+        pLayerMovement.ControlSpeed();
+    }
+
+    private void TryControlDrag()
+    {
+        pLayerMovement.ControlDrag();
+    }
+
+    private void TryUpdateSlopeMoveDirection()
+    {
+        pLayerMovement.UpdateSlopeMoveDirection();
+    }
+
+    private void GroundCheck()
+    {
+        pLayerMovement.IsGrounded();
     }
 
     private void EquipItem(int _index)
@@ -219,6 +237,29 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 break;
             }
         }
+
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+        {
+            if (itemIndex >= items.Length - 1)
+            {
+                EquipItem(0);
+            }
+            else
+            {
+                EquipItem(itemIndex + 1);
+            }
+        }
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+        {
+            if (itemIndex <= 0)
+            {
+                EquipItem(items.Length - 1);
+            }
+            else
+            {
+                EquipItem(itemIndex - 1);
+            }
+        }
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
@@ -227,11 +268,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             EquipItem((int)changedProps["itemIndex"]);
         }
-    }
-
-    public void SetGroundedState(bool _grounded)
-    {
-        grounded = _grounded;
     }
 
     public void TakeDamage(float damage)
