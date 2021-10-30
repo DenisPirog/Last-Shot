@@ -34,6 +34,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] private Image BloodEffect;
     [SerializeField] private Image Vingette;
     [SerializeField] private float hurtTimer = 0.1f;
+    [SerializeField] private int regenRate = 1;
+    [SerializeField] private float healCooldown = 4f;
+    [SerializeField] private float maxHealCooldown = 4f;
+    [SerializeField] private bool startCooldown = false;
+    private bool canRegen = false;
 
     private const float maxHealth = 100f;
     [HideInInspector] public float currentHealth = maxHealth;
@@ -99,6 +104,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         TryLook();
         TryMove();
         TryJump();
+
+        TryStartCooldown();
+        TryRegen();
     }
 
     private void TryDieInVoid()
@@ -315,8 +323,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         if (currentHealth >= 0f)
         {
+            canRegen = false;
             HealthUpdate();
             StartCoroutine(HurtFlash());
+            healCooldown = maxHealCooldown;
+            startCooldown = true;
         }        
 
         healthBarImage.fillAmount = currentHealth / maxHealth;
@@ -341,5 +352,36 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         audioSource.PlayOneShot(hurt);
         yield return new WaitForSeconds(hurtTimer);
         Vingette.enabled = false;
+    }
+    
+    private void TryStartCooldown()
+    {
+        if (startCooldown)
+        {
+            healCooldown -= Time.deltaTime;
+            if (healCooldown <= 0)
+            {
+                canRegen = true;
+                startCooldown = false;
+            }
+        }
+    }
+
+    private void TryRegen()
+    {
+        if (canRegen)
+        {
+            if (currentHealth <= maxHealth - 0.01f)
+            {
+                currentHealth += Time.deltaTime * regenRate;
+                HealthUpdate();
+            }
+            else
+            {
+                currentHealth = maxHealth;
+                healCooldown = maxHealth;
+                canRegen = false;
+            }
+        }
     }
 }
