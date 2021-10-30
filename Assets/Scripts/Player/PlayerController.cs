@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource healthSource;
     [SerializeField] private AudioClip zoomSound;
     [SerializeField] private AudioClip hurt;
 
@@ -39,7 +40,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] private float maxHealCooldown = 4f;
     [SerializeField] private bool startCooldown = false;
     private bool canRegen = false;
-
     private const float maxHealth = 100f;
     [HideInInspector] public float currentHealth = maxHealth;
 
@@ -349,7 +349,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private IEnumerator HurtFlash()
     {
         Vingette.enabled = true;
-        audioSource.PlayOneShot(hurt);
+        healthSource.PlayOneShot(hurt);
         yield return new WaitForSeconds(hurtTimer);
         Vingette.enabled = false;
     }
