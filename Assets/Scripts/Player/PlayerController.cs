@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] private Image healthBarImage;
     [SerializeField] private Image crosshair;
     [SerializeField] private Text healthText;
-    [SerializeField] private GameObject KillTab;
 
     [Header("Settings")]
     [SerializeField] float mouseSensitivity;
@@ -33,6 +32,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     [Header("Health")]
     [SerializeField] private Image BloodEffect;
+    [SerializeField] private Image Vingette;
     [SerializeField] private float hurtTimer = 0.1f;
 
     private const float maxHealth = 100f;
@@ -219,6 +219,29 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 break;
             }
         }
+
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+        {
+            if (itemIndex >= items.Length - 1)
+            {
+                EquipItem(0);
+            }
+            else
+            {
+                EquipItem(itemIndex + 1);
+            }
+        }
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+        {
+            if (itemIndex <= 0)
+            {
+                EquipItem(items.Length - 1);
+            }
+            else
+            {
+                EquipItem(itemIndex - 1);
+            }
+        }
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
@@ -232,32 +255,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public void SetGroundedState(bool _grounded)
     {
         grounded = _grounded;
-    }
-
-    public void TakeDamage(float damage)
-    {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
-    }
-
-    [PunRPC]
-    private void RPC_TakeDamage(float damage)
-    {
-        if (!PV.IsMine)
-        {
-            return;
-        }
-        currentHealth -= damage;
-
-        //HurtTimer();
-        HealthUpdate();
-
-        healthBarImage.fillAmount = currentHealth / maxHealth;
-        healthText.text = $"{currentHealth}";
-
-        if (currentHealth <= 0f)
-        {
-            Die();
-        }
     }
 
     private void Die()
@@ -300,6 +297,37 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
+
+    public void TakeDamage(float damage)
+    {
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+    }
+
+    [PunRPC]
+    private void RPC_TakeDamage(float damage)
+    {
+        if (!PV.IsMine)
+        {
+            return;
+        }
+
+        currentHealth -= damage;
+
+        if (currentHealth >= 0f)
+        {
+            HealthUpdate();
+            StartCoroutine(HurtFlash());
+        }        
+
+        healthBarImage.fillAmount = currentHealth / maxHealth;
+        healthText.text = $"{currentHealth}";
+
+        if (currentHealth <= 0f)
+        {
+            Die();
+        }
+    }
+
     private void HealthUpdate()
     {
         Color bloodEffectColor = BloodEffect.color;
@@ -307,11 +335,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         BloodEffect.color = bloodEffectColor;
     }
 
-    private IEnumerator HurtTimer()
+    private IEnumerator HurtFlash()
     {
-        BloodEffect.gameObject.SetActive(true);
+        Vingette.enabled = true;
         audioSource.PlayOneShot(hurt);
         yield return new WaitForSeconds(hurtTimer);
-        BloodEffect.gameObject.SetActive(false);
+        Vingette.enabled = false;
     }
 }
