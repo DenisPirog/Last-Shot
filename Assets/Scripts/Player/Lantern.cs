@@ -12,15 +12,15 @@ public class Lantern : MonoBehaviour
         lantern.SetActive(false);
     }
 
-    [PunRPC]
-    private void Update()
+    public void LaternOn()
     {
-        if (Input.GetKeyDown(KeyCode.L))
+        if (lantern.activeSelf)
         {
-            if (lantern.active)
-                lantern.SetActive(false);
-            else
-                lantern.SetActive(true);
-        }
+            lantern.SetActive(false);
+        }           
+        else
+        {
+            lantern.SetActive(true);
+        }            
     }
 }

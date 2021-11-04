@@ -45,20 +45,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private bool grounded;
     private Vector3 smoothMoveVelocity;
     private Vector3 moveAmount;
-
     private Rigidbody rb;
     public Weapon gun { get; private set; }
-
     [HideInInspector] public PhotonView PV;  
-
     private PlayerManager playerManager;
-
     private bool isScopeOn;
+    private Lantern lantern;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
+        lantern = GetComponent<Lantern>();
 
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
     }
@@ -99,6 +97,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         TryLook();
         TryMove();
         TryJump();
+
+        TryOnLatern();
+    }
+
+    private void TryOnLatern()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            lantern.LaternOn();
+        }
     }
 
     private void TryDieInVoid()
