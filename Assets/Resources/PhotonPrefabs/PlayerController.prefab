@@ -3377,6 +3377,7 @@ GameObject:
   - component: {fileID: 2945223479563241936}
   - component: {fileID: 7230065813063115981}
   - component: {fileID: 797850954052445009}
+  - component: {fileID: 6442042119589039576}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -3519,9 +3520,7 @@ MonoBehaviour:
   cameraHolder: {fileID: 7990534503757487995}
   UI: {fileID: 54713076679686872}
   scope: {fileID: 4342937007437254643}
-  healthBarImage: {fileID: 4899415372276405359}
   crosshair: {fileID: 4850839014334663028}
-  healthText: {fileID: 8008136744419203929}
   mouseSensitivity: 2
   sprintSpeed: 10
   walkSpeed: 5
@@ -3532,14 +3531,8 @@ MonoBehaviour:
   - {fileID: 235348569577616206}
   - {fileID: 5192151545841187988}
   audioSource: {fileID: 2945223479563241936}
-  healthSource: {fileID: 7230065813063115981}
   zoomSound: {fileID: 8300000, guid: 9fdaeeef6f8128744834924fad0a13f0, type: 3}
-  hurt: {fileID: 8300000, guid: b64880cbfaeaad34fb9828aa810a4916, type: 3}
   shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
-  BloodEffect: {fileID: 5460798040885762775}
-  Vingette: {fileID: 563890646705155796}
-  hurtTimer: 0.1
-  currentHealth: 100
   itemIndex: 0
   PV: {fileID: 0}
 --- !u!114 &7990534504149774473
@@ -3775,6 +3768,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lantern: {fileID: 7211534860156752496}
+--- !u!114 &6442042119589039576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7990534504149774474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f346c32a1eda5242978ff082842bb48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hurtTimer: 0.1
+  currentHealth: 100
+  BloodEffect: {fileID: 5460798040885762775}
+  Vingette: {fileID: 563890646705155796}
+  healthSource: {fileID: 7230065813063115981}
+  hurt: {fileID: 8300000, guid: b64880cbfaeaad34fb9828aa810a4916, type: 3}
+  healthBarImage: {fileID: 4899415372276405359}
+  healthText: {fileID: 8008136744419203929}
 --- !u!1 &7990534504221761443
 GameObject:
   m_ObjectHideFlags: 0

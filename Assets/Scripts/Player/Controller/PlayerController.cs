@@ -5,15 +5,13 @@ using Photon.Realtime;
 using UnityEngine.UI;
 using System.Collections;
 
-public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
+public class PlayerController : MonoBehaviourPunCallbacks
 {
     [Header("UI")]
     [SerializeField] GameObject cameraHolder;
     [SerializeField] GameObject UI;
     [SerializeField] private Image scope;
-    [SerializeField] private Image healthBarImage;
     [SerializeField] private Image crosshair;
-    [SerializeField] private Text healthText;
 
     [Header("Settings")]
     [SerializeField] float mouseSensitivity;
@@ -27,18 +25,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioSource healthSource;
     [SerializeField] private AudioClip zoomSound;
-    [SerializeField] private AudioClip hurt;
-
     public AudioClip shootSound;
-
-    [Header("Health")]
-    [SerializeField] private Image BloodEffect;
-    [SerializeField] private Image Vingette;
-    [SerializeField] private float hurtTimer = 0.1f;
-    private const float maxHealth = 100f;
-    [HideInInspector] public float currentHealth = maxHealth;
 
     [HideInInspector] public int itemIndex;
     private int previousItemIndex = -1;
@@ -49,7 +37,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private Vector3 moveAmount;
     private Rigidbody rb;
     public Weapon gun { get; private set; }
-    [HideInInspector] public PhotonView PV;  
+    [HideInInspector] public PhotonView PV;
     private PlayerManager playerManager;
     private bool isScopeOn;
     private Lantern lantern;
@@ -310,44 +298,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     public void TakeDamage(float damage)
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
-    }
-
-    [PunRPC]
-    private void RPC_TakeDamage(float damage)
-    {
-        if (!PV.IsMine)
-        {
-            return;
-        }
-
-        currentHealth -= damage;
-
-        if (currentHealth >= 0f)
-        {
-            HealthUpdate();
-            StartCoroutine(HurtFlash());
-        }               
-
-        if (currentHealth <= 0f)
-        {
-            Die();
-        }
-    }
-
-    private void HealthUpdate()
-    {
-        Color bloodEffectColor = BloodEffect.color;
-        bloodEffectColor.a = 1 - (currentHealth / maxHealth);
-        BloodEffect.color = bloodEffectColor;
-    }
-
-    private IEnumerator HurtFlash()
-    {
-        Vingette.enabled = true;
-        healthSource.PlayOneShot(hurt);
-        yield return new WaitForSeconds(hurtTimer);
-        Vingette.enabled = false;
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage, PV, playerManager);
     }
 
     [PunRPC]
