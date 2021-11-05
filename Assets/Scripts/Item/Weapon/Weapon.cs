@@ -29,9 +29,7 @@ public class Weapon : MonoBehaviour
     private float _fireRate = 0.1f; // 1f = 1second
     private int _amountOfAmmo;
 
-    private float _recoilX;
-    private float _recoilY;
-    private float _recoilZ;
+    private Vector3 _recoilValues;
 
     private float _snappiness;
     private float _returnSpeed;
@@ -48,24 +46,9 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        _shootSound = weaponData.shootSound;
-        _reloadSound = weaponData.reloadSound;
-        _noAmmoSound = weaponData.noAmmoSound;
-
-        bulletImpact = weaponData.bulletImpact;
-
-        _damage = weaponData.damage;
-        _fireRate = weaponData.fireRate;
-        _amountOfAmmo = weaponData.amountOfAmmo;
-
-        _recoilX = weaponData.recoilX;
-        _recoilY = weaponData.recoilY;
-        _recoilZ = weaponData.recoilZ;
-
-        _snappiness = weaponData.snappiness;
-        _returnSpeed = weaponData.returnSpeed;
-
+        LoadWeaponData();
     }
+
     private void Start()
     {
         amountOfAmmoSave = _amountOfAmmo;
@@ -124,9 +107,27 @@ public class Weapon : MonoBehaviour
 
     public void RecoilFire()
     {
-        _targetRotation += new Vector3(_recoilX,
-            Random.Range(-_recoilY, _recoilY),
-            Random.Range(-_recoilZ, _recoilZ));
+        _targetRotation += new Vector3(_recoilValues.x,
+            Random.Range(-_recoilValues.y, _recoilValues.y),
+            Random.Range(-_recoilValues.z, _recoilValues.z));
+    }
+
+    private void LoadWeaponData()
+    {
+        _shootSound = weaponData.shootSound;
+        _reloadSound = weaponData.reloadSound;
+        _noAmmoSound = weaponData.noAmmoSound;
+
+        bulletImpact = weaponData.bulletImpact;
+
+        _damage = weaponData.damage;
+        _fireRate = weaponData.fireRate;
+        _amountOfAmmo = weaponData.amountOfAmmo;
+
+        _recoilValues = weaponData.recoilValues;
+
+        _snappiness = weaponData.snappiness;
+        _returnSpeed = weaponData.returnSpeed;
     }
 
     public void UpdateText()
@@ -141,5 +142,4 @@ public class Weapon : MonoBehaviour
         _targetRotation = Vector3.Lerp(_targetRotation, Vector3.zero, _returnSpeed * Time.deltaTime);
         _currentRotation = Vector3.Slerp(_currentRotation, _targetRotation, _snappiness * Time.deltaTime);
     }
-
 }

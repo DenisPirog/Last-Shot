@@ -15,11 +15,13 @@ MonoBehaviour:
   shootSound: {fileID: 8300000, guid: d659b7f87a9663141b4ddbb7965e258b, type: 3}
   reloadSound: {fileID: 8300000, guid: e7c94b28777bb9647a649be015e4746c, type: 3}
   noAmmoSound: {fileID: 8300000, guid: 96e07d7f26869e747b3031d0050b3281, type: 3}
+  shotAnimation: {fileID: 0}
   bulletImpact: {fileID: 2744824918689920900, guid: cc78ae1045377cb479b812b695539b0c, type: 3}
   weaponName: AWP
   damage: 100
   fireRate: 2
   amountOfAmmo: 5
+  recoilValues: {x: -10, y: 0, z: 0.35}
   recoilX: -10
   recoilY: 0
   recoilZ: 0.35

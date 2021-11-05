@@ -15,11 +15,13 @@ MonoBehaviour:
   shootSound: {fileID: 8300000, guid: 708f18c3d1d08104d9d5af880e26b943, type: 3}
   reloadSound: {fileID: 8300000, guid: bb55fadc394733242bcc6521197a449f, type: 3}
   noAmmoSound: {fileID: 8300000, guid: c53accdc64c2ff840b0ec3484d7b9406, type: 3}
+  shotAnimation: {fileID: 0}
   bulletImpact: {fileID: 2744824918689920900, guid: cc78ae1045377cb479b812b695539b0c, type: 3}
   weaponName: Pistol
   damage: 20
   fireRate: 0.4
   amountOfAmmo: 20
+  recoilValues: {x: -3, y: 1, z: 0.35}
   recoilX: -3
   recoilY: 1
   recoilZ: 0.35

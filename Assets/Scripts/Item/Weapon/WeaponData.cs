@@ -21,10 +21,7 @@ public class WeaponData : ScriptableObject
     public int amountOfAmmo;
 
     [Header("Recoil Values")]
-
-    public float recoilX;
-    public float recoilY;
-    public float recoilZ;
+    public Vector3 recoilValues;
 
     [Header("Recoil Settings")]
 
