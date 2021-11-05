@@ -87,7 +87,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
             Destroy(WeaponCamera);
             Destroy(rb);
             Destroy(UI);
-
         }
     }
 
