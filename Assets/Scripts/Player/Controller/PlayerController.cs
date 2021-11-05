@@ -5,16 +5,14 @@ using Photon.Realtime;
 using UnityEngine.UI;
 using System.Collections;
 
-public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
+public class PlayerController : MonoBehaviourPunCallbacks
 {
     [Header("UI")]
 
     [SerializeField] GameObject cameraHolder;
     [SerializeField] GameObject UI;
     [SerializeField] private Image scope;
-    [SerializeField] private Image healthBarImage;
     [SerializeField] private Image crosshair;
-    [SerializeField] private Text healthText;
 
     [Header("Settings")]
 
@@ -31,10 +29,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [Header("Audio")]
 
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioSource healthSource;
     [SerializeField] private AudioClip zoomSound;
-    [SerializeField] private AudioClip hurt;
-
     public AudioClip shootSound;
 
     [Header("Health")]
@@ -306,44 +301,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     public void TakeDamage(float damage)
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
-    }
-
-    [PunRPC]
-    private void RPC_TakeDamage(float damage)
-    {
-        if (!PV.IsMine)
-        {
-            return;
-        }
-
-        currentHealth -= damage;
-
-        if (currentHealth >= 0f)
-        {
-            HealthUpdate();
-            StartCoroutine(HurtFlash());
-        }               
-
-        if (currentHealth <= 0f)
-        {
-            Die();
-        }
-    }
-
-    private void HealthUpdate()
-    {
-        Color bloodEffectColor = BloodEffect.color;
-        bloodEffectColor.a = 1 - (currentHealth / maxHealth);
-        BloodEffect.color = bloodEffectColor;
-    }
-
-    private IEnumerator HurtFlash()
-    {
-        Vingette.enabled = true;
-        healthSource.PlayOneShot(hurt);
-        yield return new WaitForSeconds(hurtTimer);
-        Vingette.enabled = false;
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage, PV, playerManager);
     }
 
     [PunRPC]
