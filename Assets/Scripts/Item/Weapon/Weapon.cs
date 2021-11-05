@@ -13,15 +13,11 @@ public class Weapon : MonoBehaviour
     public GameObject CameraHolder;
     public Camera cam;
 
-    [Header("Audio Source")]
-    public AudioSource audioSource;
-
     [Header("Particle System")]
     public ParticleSystem muzzleFlash;
 
     [Header("DATA")]
     public WeaponData weaponData;
-
 
     private AudioClip _shootSound;
     private AudioClip _reloadSound;
@@ -40,7 +36,6 @@ public class Weapon : MonoBehaviour
     private float _snappiness;
     private float _returnSpeed;
 
-
     //Rotations
     private Vector3 _currentRotation;
     private Vector3 _targetRotation;
@@ -48,6 +43,8 @@ public class Weapon : MonoBehaviour
     private float _nextTimeToFire = 0f;
 
     private int amountOfAmmoSave;
+
+    private AudioSource audioSource;
 
     private void Awake()
     {
@@ -67,10 +64,12 @@ public class Weapon : MonoBehaviour
 
         _snappiness = weaponData.snappiness;
         _returnSpeed = weaponData.returnSpeed;
+
     }
     private void Start()
     {
         amountOfAmmoSave = _amountOfAmmo;
+        audioSource = GetComponent<AudioSource>();
     }
 
     [PunRPC]
@@ -79,6 +78,7 @@ public class Weapon : MonoBehaviour
         if (Time.time >= _nextTimeToFire && _amountOfAmmo != 0)
         {
             audioSource.PlayOneShot(_shootSound);
+
             if(muzzleFlash != null)
                 muzzleFlash.Play();
 
@@ -100,13 +100,6 @@ public class Weapon : MonoBehaviour
                     Destroy(impact, 3f);
                 }              
             }
-
-
-            audioSource.Stop();
-            audioSource.clip = _shootSound;
-            audioSource.Play();
-
-
         }
         else if (_amountOfAmmo == 0 && audioSource != null)
         {

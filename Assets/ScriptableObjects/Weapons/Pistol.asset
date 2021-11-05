@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f3346b49a5d2a438c3313ef67355ab, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
-  shootSound: {fileID: 8300000, guid: 3a196573ad80d2e47b5e47aed19d8aaa, type: 3}
+  shootSound: {fileID: 8300000, guid: 708f18c3d1d08104d9d5af880e26b943, type: 3}
   reloadSound: {fileID: 8300000, guid: bb55fadc394733242bcc6521197a449f, type: 3}
   noAmmoSound: {fileID: 8300000, guid: c53accdc64c2ff840b0ec3484d7b9406, type: 3}
   bulletImpact: {fileID: 2744824918689920900, guid: cc78ae1045377cb479b812b695539b0c, type: 3}
