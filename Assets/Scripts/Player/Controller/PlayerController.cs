@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     [Header("Settings")]
 
-    [SerializeField] float mouseSensitivity;
+    public float mouseSensitivity;
     [SerializeField] float sprintSpeed;
     [SerializeField] float walkSpeed;
     [SerializeField] float jumpForce;
@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private PlayerManager playerManager;
 
     private Lantern lantern;
+
+    [SerializeField] private AWPScope awpScope;
 
     private void Awake()
     {
@@ -107,6 +109,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
         TryJump();
 
         TryOnLatern();
+        TryToScope();
+    }
+
+    private void TryToScope()
+    {
+        if (Input.GetButtonDown("Fire2") && itemIndex == 2)
+        {
+            awpScope.TryToScope();
+        }
+        else if(awpScope.isScoped && itemIndex != 2)
+        {
+            awpScope.OnUnscoped();
+        }
     }
 
     private void TryOnLatern()
@@ -231,7 +246,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             if (Input.GetKeyDown((i + 1).ToString()))
             {
-                EquipItem(i);               
+                EquipItem(i);
                 break;
             }
         }

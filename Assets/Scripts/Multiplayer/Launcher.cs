@@ -4,13 +4,14 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
     public static Launcher instance;
 
-    [SerializeField] TMP_InputField roomNameInputField;
-    [SerializeField] TMP_Text errorText;
+    [SerializeField] InputField roomNameInputField;
+    [SerializeField] Text errorText;
     [SerializeField] TMP_Text roomNameText;
     [SerializeField] Transform roomListContent;
     [SerializeField] Transform playerListContent;
@@ -46,6 +47,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             return;
         }
+
         PhotonNetwork.CreateRoom(roomNameInputField.text);
         MenuManager.instance.OpenMenu("loading");
     }
