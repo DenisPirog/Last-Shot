@@ -8,6 +8,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
     [Header("UI")]
+
     [SerializeField] GameObject cameraHolder;
     [SerializeField] GameObject UI;
     [SerializeField] private Image scope;
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] private Text healthText;
 
     [Header("Settings")]
+
     [SerializeField] float mouseSensitivity;
     [SerializeField] float sprintSpeed;
     [SerializeField] float walkSpeed;
@@ -23,9 +25,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] float smoothTime;
 
     [Header("Items")]
+
     [SerializeField] private GameObject[] items;
 
     [Header("Audio")]
+
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource healthSource;
     [SerializeField] private AudioClip zoomSound;
@@ -34,24 +38,32 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public AudioClip shootSound;
 
     [Header("Health")]
+
     [SerializeField] private Image BloodEffect;
     [SerializeField] private Image Vingette;
     [SerializeField] private float hurtTimer = 0.1f;
+
     private const float maxHealth = 100f;
+
     [HideInInspector] public float currentHealth = maxHealth;
 
     [HideInInspector] public int itemIndex;
+
     private int previousItemIndex = -1;
 
     private float verticalLookRotation;
     private bool grounded;
+
     private Vector3 smoothMoveVelocity;
     private Vector3 moveAmount;
+
     private Rigidbody rb;
     public Weapon gun { get; private set; }
+
     [HideInInspector] public PhotonView PV;  
+
     private PlayerManager playerManager;
-    private bool isScopeOn;
+
     private Lantern lantern;
 
     private void Awake()
@@ -94,7 +106,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         TryShoot();
         TryReload();
-        TryScope();
         TryHideCrosshair();
         TryLook();
         TryMove();
@@ -271,25 +282,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         playerManager.Die();
     }
-
-    private void TryScope()
+    private IEnumerator IsScoped()
     {
-        if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == false)
-        {
-            scope.gameObject.SetActive(true);
-            isScopeOn = true;
-            audioSource.PlayOneShot(zoomSound);
-        }
-        else if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == true)
-        {
-            scope.gameObject.SetActive(false);
-            isScopeOn = false;
-        }
-        else if (itemIndex != 2)
-        {
-            scope.gameObject.SetActive(false);
-            isScopeOn = false;
-        }
+        yield return new WaitForSeconds(.15f);
+
     }
 
     private void TrySwicthItemImage()
