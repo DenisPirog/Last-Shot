@@ -83,8 +83,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
         else
         {
-            Destroy(Camera);
-            Destroy(WeaponCamera);
+            Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(rb);
             Destroy(UI);
         }
