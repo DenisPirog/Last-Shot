@@ -6311,6 +6311,8 @@ MonoBehaviour:
   UI: {fileID: 8667803156182234}
   scope: {fileID: 8667802801616088}
   crosshair: {fileID: 8667802359506889}
+  healthBarImage: {fileID: 8667803252469648}
+  healthText: {fileID: 8667803678434727}
   mouseSensitivity: 2
   sprintSpeed: 10
   walkSpeed: 5
@@ -6323,6 +6325,8 @@ MonoBehaviour:
   audioSource: {fileID: 8667802932264512}
   zoomSound: {fileID: 8300000, guid: 9fdaeeef6f8128744834924fad0a13f0, type: 3}
   shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
+  healthSource: {fileID: 8667802932264543}
+  hurt: {fileID: 8300000, guid: b64880cbfaeaad34fb9828aa810a4916, type: 3}
   BloodEffect: {fileID: 8667802400639752}
   Vingette: {fileID: 8667803589630598}
   hurtTimer: 0.1
@@ -14379,11 +14383,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f346c32a1eda5242978ff082842bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hurtTimer: 0.1
-  currentHealth: 100
-  BloodEffect: {fileID: 0}
-  Vingette: {fileID: 0}
-  healthSource: {fileID: 0}
-  hurt: {fileID: 8300000, guid: b64880cbfaeaad34fb9828aa810a4916, type: 3}
-  healthBarImage: {fileID: 0}
-  healthText: {fileID: 0}

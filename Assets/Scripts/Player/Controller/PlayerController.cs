@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] GameObject UI;
     [SerializeField] private Image scope;
     [SerializeField] private Image crosshair;
+    [SerializeField] private Image healthBarImage;
+    [SerializeField] private Text healthText;
 
     [Header("Settings")]
 
@@ -31,6 +33,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip zoomSound;
     public AudioClip shootSound;
+    [SerializeField] private AudioSource healthSource;
+    [SerializeField] private AudioClip hurt;
 
     [Header("Health")]
 
@@ -298,7 +302,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private IEnumerator IsScoped()
     {
         yield return new WaitForSeconds(.15f);
-
     }
 
     private void TrySwicthItemImage()
@@ -326,5 +329,45 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public void PlaySound()
     {
         audioSource.PlayOneShot(shootSound);
+    }
+
+    [PunRPC]
+    private void RPC_TakeDamage(float damage)
+    {
+        if (!PV.IsMine)
+        {
+            return;
+        }
+
+        currentHealth -= damage;
+
+        if (currentHealth >= 0f - 0.01f)
+        {
+            HealthUpdate();
+            StartCoroutine(HurtFlash());
+        }
+
+        if (currentHealth <= 0f)
+        {
+            Die();
+        }
+    }
+
+    private void HealthUpdate()
+    {
+        Color bloodEffectColor = BloodEffect.color;
+        bloodEffectColor.a = 1 - (currentHealth / maxHealth);
+        BloodEffect.color = bloodEffectColor;
+
+        healthText.text = $"{currentHealth}";
+        healthBarImage.fillAmount = currentHealth / maxHealth;
+    }
+
+    private IEnumerator HurtFlash()
+    {
+        Vingette.enabled = true;
+        healthSource.PlayOneShot(hurt);
+        yield return new WaitForSeconds(hurtTimer);
+        Vingette.enabled = false;
     }
 }
