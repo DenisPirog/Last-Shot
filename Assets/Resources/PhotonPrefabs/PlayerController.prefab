@@ -6330,6 +6330,8 @@ MonoBehaviour:
   itemIndex: 0
   PV: {fileID: 0}
   awpScope: {fileID: 8667803623145211}
+  Camera: {fileID: 8667803254566639}
+  WeaponCamera: {fileID: 8667803420121399}
 --- !u!114 &8667802932264514
 MonoBehaviour:
   m_ObjectHideFlags: 0

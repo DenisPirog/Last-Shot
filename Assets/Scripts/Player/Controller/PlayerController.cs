@@ -63,6 +63,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     [SerializeField] private AWPScope awpScope;
 
+    [SerializeField] private Camera Camera;
+    [SerializeField] private Camera WeaponCamera;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -80,9 +83,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
         else
         {
-            Destroy(GetComponentInChildren<Camera>().gameObject);
+            Destroy(Camera);
+            Destroy(WeaponCamera);
             Destroy(rb);
             Destroy(UI);
+
         }
     }
 
