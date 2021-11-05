@@ -11,6 +11,7 @@ public class AWPScope : MonoBehaviour
     public float scopedFOV = 15f;
     private float normalFOV;
     public PlayerController player;
+    public float scopeSensitivity;
 
     private void Start()
     {
@@ -34,7 +35,7 @@ public class AWPScope : MonoBehaviour
         weaponCamera.SetActive(true);
 
         mainCamera.fieldOfView = normalFOV;
-
+        player.mouseSensitivity = 2f;
         isScoped = false;
     }
     private IEnumerator OnScoped()
@@ -44,6 +45,6 @@ public class AWPScope : MonoBehaviour
         weaponCamera.SetActive(false);
 
         mainCamera.fieldOfView = scopedFOV;
-        player.mouseSensitivity /= 1.3f;
+        player.mouseSensitivity = scopeSensitivity;
     }
 }

@@ -7833,6 +7833,7 @@ MonoBehaviour:
   isScoped: 0
   scopedFOV: 15
   player: {fileID: 8667802932264515}
+  scopeSensitivity: 1.5
 --- !u!82 &8667803623145210
 AudioSource:
   m_ObjectHideFlags: 0
