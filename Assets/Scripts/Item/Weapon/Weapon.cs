@@ -71,10 +71,12 @@ public class Weapon : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                hit.collider.gameObject.GetComponent<PlayerController>()?.TakeDamage(_damage);
+                hit.collider.gameObject
+                    .GetComponent<IDamageable>()?
+                    .TakeDamage(_damage);
                 _amountOfAmmo -= 1;
                 RecoilFire();
-                if (hit.collider.gameObject.GetComponent<PlayerController>() == null)
+                if (hit.collider.gameObject.GetComponent<IDamageable>() == null)
                 {
                     GameObject impact = Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
                     Destroy(impact, 3f);
