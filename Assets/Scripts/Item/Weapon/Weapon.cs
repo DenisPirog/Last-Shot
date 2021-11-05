@@ -72,12 +72,11 @@ public class Weapon : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    [PunRPC]
-    public void RPC_Shoot(string actor)
+    public void Shoot(PhotonView PV)
     {
         if (Time.time >= _nextTimeToFire && _amountOfAmmo != 0)
         {
-            audioSource.PlayOneShot(_shootSound);
+            PV.RPC("PlaySound", RpcTarget.All);
 
             if(muzzleFlash != null)
                 muzzleFlash.Play();
@@ -141,5 +140,4 @@ public class Weapon : MonoBehaviour
         _targetRotation = Vector3.Lerp(_targetRotation, Vector3.zero, _returnSpeed * Time.deltaTime);
         _currentRotation = Vector3.Slerp(_currentRotation, _targetRotation, _snappiness * Time.deltaTime);
     }
-
 }

@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] private AudioClip zoomSound;
     [SerializeField] private AudioClip hurt;
 
+    public AudioClip shootSound;
+
     [Header("Health")]
     [SerializeField] private Image BloodEffect;
     [SerializeField] private Image Vingette;
@@ -141,7 +143,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (Input.GetMouseButton(0))
         {
-            gun.RPC_Shoot(PV.Owner.NickName);
+            gun.Shoot(PV);
         }
     }
 
@@ -346,5 +348,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         healthSource.PlayOneShot(hurt);
         yield return new WaitForSeconds(hurtTimer);
         Vingette.enabled = false;
+    }
+
+    [PunRPC]
+    public void PlaySound()
+    {
+        audioSource.PlayOneShot(shootSound);
     }
 }
