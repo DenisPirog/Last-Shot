@@ -8627,28 +8627,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
   - component: {fileID: 8667803982136063}
   - component: {fileID: 8667803982136033}
   - component: {fileID: 8667803982136032}
   m_Layer: 6
   m_Name: Main Flash
-=======
-  - component: {fileID: 7990534504149774706}
-  - component: {fileID: 7990534504149774707}
-  - component: {fileID: 960294941162575566}
-  - component: {fileID: 7990534504149774477}
-  - component: {fileID: 7990534504149774478}
-  - component: {fileID: 7990534504149774479}
-  - component: {fileID: 7990534504149774472}
-  - component: {fileID: 7990534504149774473}
-  - component: {fileID: 2244497743855993010}
-  - component: {fileID: 2945223479563241936}
-  - component: {fileID: 7230065813063115981}
-  - component: {fileID: 797850954052445009}
-  m_Layer: 0
-  m_Name: PlayerController
->>>>>>> parent of 916527b (wip: HealthController)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13556,7 +13539,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 1, b: 0.082546234, a: 1}
   m_RaycastTarget: 1
@@ -13577,36 +13559,6 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &8667804215352624
 GameObject:
-=======
-  cameraHolder: {fileID: 7990534503757487995}
-  UI: {fileID: 54713076679686872}
-  scope: {fileID: 4342937007437254643}
-  healthBarImage: {fileID: 4899415372276405359}
-  crosshair: {fileID: 4850839014334663028}
-  healthText: {fileID: 8008136744419203929}
-  mouseSensitivity: 2
-  sprintSpeed: 10
-  walkSpeed: 5
-  jumpForce: 300
-  smoothTime: 0.15
-  items:
-  - {fileID: 6708128443468306948}
-  - {fileID: 235348569577616206}
-  - {fileID: 5192151545841187988}
-  audioSource: {fileID: 2945223479563241936}
-  healthSource: {fileID: 7230065813063115981}
-  zoomSound: {fileID: 8300000, guid: 9fdaeeef6f8128744834924fad0a13f0, type: 3}
-  hurt: {fileID: 8300000, guid: b64880cbfaeaad34fb9828aa810a4916, type: 3}
-  shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
-  BloodEffect: {fileID: 5460798040885762775}
-  Vingette: {fileID: 563890646705155796}
-  hurtTimer: 0.1
-  currentHealth: 100
-  itemIndex: 0
-  PV: {fileID: 0}
---- !u!114 &7990534504149774473
-MonoBehaviour:
->>>>>>> parent of 916527b (wip: HealthController)
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -13642,7 +13594,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8667804217658663}
@@ -13676,16 +13627,6 @@ RectTransform:
   m_SizeDelta: {x: 400, y: 170}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8667804247056129
-=======
-  m_GameObject: {fileID: 7990534504149774474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 130b7ab3ad5408845bf84dbe6c542399, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lantern: {fileID: 7211534860156752496}
---- !u!1 &7990534504221761443
->>>>>>> parent of 916527b (wip: HealthController)
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
