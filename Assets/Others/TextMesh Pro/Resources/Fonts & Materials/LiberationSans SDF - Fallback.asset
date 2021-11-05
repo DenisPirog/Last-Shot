@@ -331,6 +331,7 @@ MonoBehaviour:
       m_Height: 46
     m_Scale: 1
     m_AtlasIndex: 0
+
   - m_Index: 1020
     m_Metrics:
       m_Width: 52
