@@ -3535,6 +3535,7 @@ MonoBehaviour:
   healthSource: {fileID: 7230065813063115981}
   zoomSound: {fileID: 8300000, guid: 9fdaeeef6f8128744834924fad0a13f0, type: 3}
   hurt: {fileID: 8300000, guid: b64880cbfaeaad34fb9828aa810a4916, type: 3}
+  shootSound: {fileID: 8300000, guid: 38b450e2adcb6f542acc8c1d423bd8dc, type: 3}
   BloodEffect: {fileID: 5460798040885762775}
   Vingette: {fileID: 563890646705155796}
   hurtTimer: 0.1

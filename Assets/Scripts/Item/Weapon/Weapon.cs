@@ -55,12 +55,11 @@ public class Weapon : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    [PunRPC]
-    public void RPC_Shoot(string actor)
+    public void Shoot(PhotonView PV)
     {
         if (Time.time >= _nextTimeToFire && _amountOfAmmo != 0)
         {
-            audioSource.PlayOneShot(_shootSound);
+            PV.RPC("PlaySound", RpcTarget.All);
 
             if(muzzleFlash != null)
                 muzzleFlash.Play();
