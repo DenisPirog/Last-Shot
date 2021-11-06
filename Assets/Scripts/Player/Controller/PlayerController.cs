@@ -320,7 +320,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void TakeDamage(float damage)
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage, PV, playerManager);
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
     }
 
     [PunRPC]
