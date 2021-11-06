@@ -5,65 +5,74 @@ using Photon.Realtime;
 using UnityEngine.UI;
 using System.Collections;
 
-public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
+public class PlayerController : MonoBehaviourPunCallbacks
 {
     [Header("UI")]
+
     [SerializeField] GameObject cameraHolder;
     [SerializeField] GameObject UI;
     [SerializeField] private Image scope;
-    [SerializeField] private Image healthBarImage;
     [SerializeField] private Image crosshair;
+    [SerializeField] private Image healthBarImage;
     [SerializeField] private Text healthText;
 
     [Header("Settings")]
-    [SerializeField] float mouseSensitivity;
+
+    public float mouseSensitivity;
     [SerializeField] float sprintSpeed;
     [SerializeField] float walkSpeed;
     [SerializeField] float jumpForce;
     [SerializeField] float smoothTime;
 
     [Header("Items")]
+
     [SerializeField] private GameObject[] items;
 
     [Header("Audio")]
+
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioSource healthSource;
     [SerializeField] private AudioClip zoomSound;
+    public AudioClip shootSound;
+    [SerializeField] private AudioSource healthSource;
     [SerializeField] private AudioClip hurt;
 
     [Header("Health")]
+
     [SerializeField] private Image BloodEffect;
     [SerializeField] private Image Vingette;
     [SerializeField] private float hurtTimer = 0.1f;
+
     private const float maxHealth = 100f;
+
     [HideInInspector] public float currentHealth = maxHealth;
 
     [HideInInspector] public int itemIndex;
+
     private int previousItemIndex = -1;
 
     private float verticalLookRotation;
     private bool grounded;
+
     private Vector3 smoothMoveVelocity;
     private Vector3 moveAmount;
+
     private Rigidbody rb;
     public Weapon gun { get; private set; }
+
     [HideInInspector] public PhotonView PV;  
+
     private PlayerManager playerManager;
-    private bool isScopeOn;
+
     private Lantern lantern;
-    [SerializeField] private Camera mainCamera;
 
-    private float defaultFOV;
-    private float defaultMouseSensitivity;
-
+    [SerializeField] private AWPScope awpScope;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
         lantern = GetComponent<Lantern>();
-        defaultFOV = mainCamera.fieldOfView;
-        defaultMouseSensitivity = mouseSensitivity;
+        awpScope.normalFOV = GetComponentInChildren<Camera>().fieldOfView;
 
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
     }
@@ -99,13 +108,25 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         TryShoot();
         TryReload();
-        TryScope();
         TryHideCrosshair();
         TryLook();
         TryMove();
         TryJump();
 
         TryOnLatern();
+        TryToScope();
+    }
+
+    private void TryToScope()
+    {
+        if (Input.GetButtonDown("Fire2") && itemIndex == 2)
+        {
+            awpScope.TryToScope();
+        }
+        else if(awpScope.isScoped && itemIndex != 2)
+        {
+            awpScope.OnUnscoped();
+        }
     }
 
     private void TryOnLatern()
@@ -230,7 +251,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             if (Input.GetKeyDown((i + 1).ToString()))
             {
-                EquipItem(i);               
+                EquipItem(i);
                 break;
             }
         }
@@ -276,31 +297,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         playerManager.Die();
     }
-
-    private void TryScope()
+    private IEnumerator IsScoped()
     {
-        if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == false)
-        {
-            scope.gameObject.SetActive(true);
-            isScopeOn = true;
-            audioSource.PlayOneShot(zoomSound);
-            mainCamera.fieldOfView = 15;
-            mouseSensitivity = 1f;
-        }
-        else if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == true)
-        {
-            scope.gameObject.SetActive(false);
-            isScopeOn = false;
-            mainCamera.fieldOfView = defaultFOV;
-            mouseSensitivity = defaultMouseSensitivity;
-        }
-        else if (itemIndex != 2)
-        {
-            scope.gameObject.SetActive(false);
-            isScopeOn = false;
-            mainCamera.fieldOfView = defaultFOV;
-            mouseSensitivity = defaultMouseSensitivity;
-        }
+        yield return new WaitForSeconds(.15f);
     }
 
     private void TrySwicthItemImage()
@@ -321,7 +320,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     public void TakeDamage(float damage)
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage, PV, playerManager);
+    }
+
+    [PunRPC]
+    public void PlaySound()
+    {
+        audioSource.PlayOneShot(shootSound);
     }
 
     [PunRPC]
@@ -334,11 +339,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         currentHealth -= damage;
 
-        if (currentHealth >= 0f)
+        if (currentHealth >= 0f - 0.01f)
         {
             HealthUpdate();
             StartCoroutine(HurtFlash());
-        }               
+        }
 
         if (currentHealth <= 0f)
         {
