@@ -71,9 +71,7 @@ public class Weapon : MonoBehaviour
         amountOfAmmoSave = _amountOfAmmo;
         audioSource = GetComponent<AudioSource>();
     }
-
-    [PunRPC]
-    public void RPC_Shoot(string actor)
+    public void Shoot()
     {
         if (Time.time >= _nextTimeToFire && _amountOfAmmo != 0)
         {

@@ -51,12 +51,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private PlayerManager playerManager;
     private bool isScopeOn;
     private Lantern lantern;
+    [SerializeField] private Camera mainCamera;
+
+    private float defaultFOV;
+    private float defaultMouseSensitivity;
+
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
         lantern = GetComponent<Lantern>();
+        defaultFOV = mainCamera.fieldOfView;
+        defaultMouseSensitivity = mouseSensitivity;
 
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
     }
@@ -141,7 +148,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (Input.GetMouseButton(0))
         {
-            gun.RPC_Shoot(PV.Owner.NickName);
+            gun.Shoot();
         }
     }
 
@@ -277,11 +284,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             scope.gameObject.SetActive(true);
             isScopeOn = true;
             audioSource.PlayOneShot(zoomSound);
+            mainCamera.fieldOfView = 15;
+            mouseSensitivity = 1f;
         }
         else if (Input.GetMouseButtonDown(1) && itemIndex == 2 && isScopeOn == true)
         {
             scope.gameObject.SetActive(false);
             isScopeOn = false;
+            mainCamera.fieldOfView = defaultFOV;
+            mouseSensitivity = defaultMouseSensitivity;
         }
         else if (itemIndex != 2)
         {
