@@ -338,6 +338,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         Color bloodEffectColor = BloodEffect.color;
         bloodEffectColor.a = 1 - (currentHealth / maxHealth);
         BloodEffect.color = bloodEffectColor;
+
+        healthText.text = $"{currentHealth}";
+        healthBarImage.fillAmount = currentHealth / maxHealth;
     }
 
     private IEnumerator HurtFlash()
