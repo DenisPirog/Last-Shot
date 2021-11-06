@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
         else
         {
-            gameObject.layer.Equals("EnemyLayer");
+            gameObject.layer = LayerMask.NameToLayer("EnemyLayer");
 
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(rb);
