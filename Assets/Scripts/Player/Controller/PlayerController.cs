@@ -298,6 +298,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             scope.gameObject.SetActive(false);
             isScopeOn = false;
+            mainCamera.fieldOfView = defaultFOV;
+            mouseSensitivity = defaultMouseSensitivity;
         }
     }
 
